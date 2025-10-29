@@ -6,10 +6,6 @@ Aplikasi direktori UMKM yang dibangun dengan Next.js 14 dan Tailwind CSS dengan 
 
 ## 📚 Dokumentasi
 
-**Baru pertama kali?** → Mulai dari [SETUP_INSTRUCTIONS.md](SETUP_INSTRUCTIONS.md)
-
-**Lihat semua dokumentasi:** → [INDEX.md](INDEX.md)
-
 | Dokumen | Deskripsi |
 |---------|-----------|
 | [running.md](running.md)| dependenci FE & BE
