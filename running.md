@@ -1,17 +1,25 @@
-install di be
+🚀 Panduan Instalasi & Menjalankan Backend
+📦 Instalasi Dependensi
+
+Jalankan perintah berikut untuk menginstal semua package yang dibutuhkan:
+
 npm install
 npm install ts-node typescript @types/node --save-dev
-npm install --save-dev @type/cors 
 npm install express cors
-npm install -D @types/cors
-npm install -D @types/express
 npm install mysql2
-npm install --save-dev @types/mysql2
+npm install --save-dev @types/express @types/cors @types/mysql2
 
+🌱 Seeder Data ke Database MySQL
 
-cara seeder data ke db mysql 
+Untuk melakukan seeding data ke database, gunakan perintah berikut:
+
 npx ts-node src/seed/seedUMKM.ts
 
-run be nya
-npm run dev
 
+Pastikan database sudah dibuat sebelum menjalankan perintah ini.
+
+▶️ Menjalankan Backend
+
+Gunakan perintah berikut untuk menjalankan server backend:
+
+npm run dev

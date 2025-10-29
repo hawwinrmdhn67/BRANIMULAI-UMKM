@@ -12,7 +12,7 @@ Aplikasi direktori UMKM yang dibangun dengan Next.js 14 dan Tailwind CSS dengan 
 
 | Dokumen | Deskripsi |
 |---------|-----------|
-| [QUICK_START.md](QUICK_START.md) | ⚡ Quick start guide |
+| [running.md](running.md)| dependenci FE & BE
 
 ---
 
@@ -60,7 +60,7 @@ Aplikasi direktori UMKM yang dibangun dengan Next.js 14 dan Tailwind CSS dengan 
 - **Notifications**: Sonner (Toast)
 - **Language**: TypeScript
 
-## Struktur Folder
+## Struktur Folder FE
 
 ```
 ├── app/

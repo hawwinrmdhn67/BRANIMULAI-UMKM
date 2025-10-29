@@ -12,19 +12,19 @@ interface NavbarProps {
 
 export function Navbar({ currentPage, onNavigate, pendingCount = 0 }: NavbarProps) {
   return (
-    <nav className="bg-primary text-primary-foreground shadow-md sticky top-0 z-50">
-      <div className="container mx-auto px-4 py-4">
-        <div className="flex items-center justify-between">
+    <>
+    <nav className="bg-primary text-primary-foreground shadow-md sticky top-0 z-50 w-full h-16 flex items-center">
+      <div className="container mx-auto px-4 h-full">
+        <div className="flex items-center justify-between h-full">
           {/* Logo dan Nama */}
-          <div className="flex items-center gap-2">
-            <img 
+          <div className="flex items-center gap-3">
+            <img
               src="/img/branimulai.png"
               alt="Logo BRANIMULAI"
-              className="w-50 h-10 object-contain"
+              className="h-10 w-auto object-contain"
             />
-            <h1 className="text-white font-semibold">BRANIMULAI</h1>
+            <span className="text-lg font-semibold tracking-wide">BraniMulai</span>
           </div>
-          
           {/* Navigasi */}
           <div className="flex gap-2">
             <Button
@@ -54,5 +54,8 @@ export function Navbar({ currentPage, onNavigate, pendingCount = 0 }: NavbarProp
         </div>
       </div>
     </nav>
+    {/* Spacer to prevent sticky navbar from overlapping page content */}
+    <div className="h-16" aria-hidden />
+    </>
   );
 }

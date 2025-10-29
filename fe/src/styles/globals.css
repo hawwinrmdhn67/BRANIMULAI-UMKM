@@ -187,3 +187,24 @@
 html {
   font-size: var(--font-size);
 }
+
+/* Fallback: force TabsTrigger active state to brand green if Tailwind arbitrary classes
+   are not available in the build. Targets Radix Trigger via data-slot and data-state. */
+[data-slot="tabs-trigger"][data-state="active"] {
+  background-color: #008236 !important;
+  color: #ffffff !important;
+}
+
+/* Stronger selector: target triggers that are children of the tabs list to ensure
+   active state is visible even if parent/backdrop styling is applied. */
+[data-slot="tabs-list"] [data-slot="tabs-trigger"][data-state="active"] {
+  background-color: #008236 !important;
+  color: #ffffff !important;
+  box-shadow: none !important;
+}
+
+/* Also target button elements that Radix may render for triggers */
+[data-slot="tabs-list"] button[data-state="active"] {
+  background-color: #008236 !important;
+  color: #ffffff !important;
+}
