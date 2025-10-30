@@ -21,9 +21,8 @@ export function Navbar({ currentPage, onNavigate, pendingCount = 0 }: NavbarProp
             <img
               src="/img/branimulai.png"
               alt="Logo BRANIMULAI"
-              className="h-10 w-auto object-contain"
+              className="h-12 w-auto object-contain"
             />
-            <span className="text-lg font-semibold tracking-wide">BraniMulai</span>
           </div>
           {/* Navigasi */}
           <div className="flex gap-2">
