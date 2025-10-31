@@ -1,6 +1,7 @@
 "use client";
 
 import { UMKM } from "../../lib/types";
+import { mapUMKMCoordinates } from "../../lib/helpers";
 import { Button } from "../ui/button";
 import { ArrowLeft } from "lucide-react";
 import { UMKMPhotos } from "./UMKMPhotos";
@@ -14,7 +15,9 @@ interface DetailPageProps {
   onBack: () => void;
 }
 
-export function DetailPage({ umkm, onBack }: DetailPageProps) {
+export function DetailPage({ umkm: rawUMKM, onBack }: DetailPageProps) {
+  const umkm = mapUMKMCoordinates(rawUMKM);
+
   return (
     <div className="min-h-screen bg-secondary/30">
       {/* Header */}
@@ -32,12 +35,11 @@ export function DetailPage({ umkm, onBack }: DetailPageProps) {
           <div>
             <h1 className="text-white text-lg font-semibold">{umkm.name}</h1>
 
-            {/* Mini card kategori lebih menonjol */}
             <div className="inline-block bg-white text-primary text-sm font-semibold px-3 py-1 rounded-xl mt-4">
               {umkm.category}
             </div>
           </div>
-        </div>  
+        </div>
       </div>
 
       {/* Content */}

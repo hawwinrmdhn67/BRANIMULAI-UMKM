@@ -24,17 +24,19 @@ export function UMKMMap({ coordinates }: UMKMMapProps) {
   }
 
   return (
-    <Card>
+    <Card className="w-full">
       <CardHeader>
         <h3>Lokasi</h3>
       </CardHeader>
-      <CardContent>
-        <iframe
-          title="UMKM Location"
-          src={`https://www.google.com/maps?q=${coordinates.lat},${coordinates.lng}&hl=id&z=15&output=embed`}
-          className="w-full h-64 rounded-xl"
-          loading="lazy"
-        ></iframe>
+      <CardContent className="p-4"> {/* kasih padding agar tidak mepet */}
+        <div className="relative w-full" style={{ paddingTop: "56.25%" }}>
+          <iframe
+            title="UMKM Location"
+            src={`https://www.google.com/maps?q=${coordinates.lat},${coordinates.lng}&hl=id&z=15&output=embed`}
+            className="absolute top-0 left-0 w-full h-full rounded-xl"
+            loading="lazy"
+          ></iframe>
+        </div>
       </CardContent>
     </Card>
   );
