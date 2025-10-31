@@ -21,8 +21,7 @@ export function UMKMForm({ onAddUMKM }: UMKMFormProps) {
     category: "Makanan",
     description: "",
     address: "",
-    lat: "",
-    lng: "",
+    locationLink: "",
     photoUrl: "",
     phone: "",
     whatsapp: "",
@@ -38,18 +37,19 @@ export function UMKMForm({ onAddUMKM }: UMKMFormProps) {
       !formData.name ||
       !formData.description ||
       !formData.address ||
-      !formData.lat ||
-      !formData.lng ||
+      !formData.locationLink ||
       !formData.photoUrl
     ) {
       toast.error("Mohon lengkapi semua field yang wajib diisi");
       return;
     }
 
-    const lat = parseFloat(formData.lat);
-    const lng = parseFloat(formData.lng);
-    if (isNaN(lat) || isNaN(lng)) {
-      toast.error("Latitude dan Longitude harus berupa angka yang valid");
+    // basic URL validation for location link
+    try {
+      // eslint-disable-next-line no-new
+      new URL(formData.locationLink);
+    } catch (e) {
+      toast.error("Lokasi harus berupa link yang valid (contoh: https://www.google.com/maps?q=...")
       return;
     }
 
@@ -60,7 +60,9 @@ export function UMKMForm({ onAddUMKM }: UMKMFormProps) {
       category: formData.category,
       description: formData.description,
       address: formData.address,
-      coordinates: { lat, lng },
+      // send as locationLink (backend will store as location_link)
+      // keep coordinates absent (or backend can read coordinates if provided)
+      locationLink: formData.locationLink,
       photos: [formData.photoUrl],
       phone: formData.phone || undefined,
       whatsapp: formData.whatsapp || undefined,
@@ -90,8 +92,7 @@ export function UMKMForm({ onAddUMKM }: UMKMFormProps) {
         category: "Makanan",
         description: "",
         address: "",
-        lat: "",
-        lng: "",
+        locationLink: "",
         photoUrl: "",
         phone: "",
         whatsapp: "",
@@ -164,35 +165,18 @@ export function UMKMForm({ onAddUMKM }: UMKMFormProps) {
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <Label htmlFor="lat">Latitude *</Label>
-              <Input
-                id="lat"
-                type="number"
-                step="any"
-                value={formData.lat}
-                onChange={(e) =>
-                  setFormData({ ...formData, lat: e.target.value })
-                }
-                placeholder="-6.2088"
-                required
-              />
-            </div>
-            <div>
-              <Label htmlFor="lng">Longitude *</Label>
-              <Input
-                id="lng"
-                type="number"
-                step="any"
-                value={formData.lng}
-                onChange={(e) =>
-                  setFormData({ ...formData, lng: e.target.value })
-                }
-                placeholder="106.8456"
-                required
-              />
-            </div>
+          <div>
+            <Label htmlFor="locationLink">Link Lokasi (Google Maps) *</Label>
+            <Input
+              id="locationLink"
+              type="url"
+              value={formData.locationLink}
+              onChange={(e) =>
+                setFormData({ ...formData, locationLink: e.target.value })
+              }
+              placeholder="https://www.google.com/maps?q=-6.2088,106.8456"
+              required
+            />
           </div>
 
           <div>

@@ -28,25 +28,34 @@ export const addUMKM = async (req: Request, res: Response) => {
       description,
       address,
       coordinates,
+      locationLink,
       photos,
       phone,
       whatsapp,
       status,
     } = req.body;
 
+    // Normalize/derive a single location link to store in DB.
+    // If the client provided numeric coordinates but not a link, build a Google Maps query link.
+    let locationLinkToStore: string | null = null;
+    if (locationLink) {
+      locationLinkToStore = locationLink;
+    } else if (coordinates && coordinates.lat != null && coordinates.lng != null) {
+      locationLinkToStore = `https://www.google.com/maps?q=${coordinates.lat},${coordinates.lng}`;
+    }
+
     const createdAt = new Date().toISOString().slice(0, 19).replace("T", " ");
 
     const [result] = await db.query<ResultSetHeader>(
       `INSERT INTO umkm
-       (name, category, description, address, latitude, longitude, photos, phone, whatsapp, createdAt, status)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+       (name, category, description, address, location_link, photos, phone, whatsapp, createdAt, status)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         name,
         category,
         description,
         address,
-        coordinates.lat,
-        coordinates.lng,
+        locationLinkToStore,
         JSON.stringify(photos),
         phone || null,
         whatsapp || null,
