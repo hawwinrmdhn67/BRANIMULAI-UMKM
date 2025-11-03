@@ -9,12 +9,13 @@ CREATE TABLE umkm (
   address VARCHAR(255) NOT NULL,
   latitude DOUBLE NOT NULL,
   longitude DOUBLE NOT NULL,
+  maps_link TEXT,  
   photos JSON NOT NULL,
   phone VARCHAR(20),
   whatsapp VARCHAR(20),
   createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
   status ENUM('pending', 'approved', 'rejected') DEFAULT 'pending',
-  
-  -- Tambahkan UNIQUE constraint untuk mencegah duplikat name address
+
+  -- Mencegah duplikat kombinasi nama + alamat
   UNIQUE KEY unique_umkm (name, address)
 );

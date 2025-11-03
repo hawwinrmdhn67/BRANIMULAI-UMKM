@@ -32,14 +32,33 @@ export const addUMKM = async (req: Request, res: Response) => {
       phone,
       whatsapp,
       status,
+      maps_link,
     } = req.body;
+
+    if (!name || !category || !description || !address || !coordinates) {
+      return res.status(400).json({ message: "Data UMKM tidak lengkap" });
+    }
+
+    const [existing] = await db.query<RowDataPacket[]>(
+      "SELECT id FROM umkm WHERE name = ? AND address = ?",
+      [name, address]
+    );
+    if (existing.length > 0) {
+      return res
+        .status(400)
+        .json({ message: "UMKM dengan nama dan alamat ini sudah terdaftar" });
+    }
+
+    const mapsLink =
+      maps_link ||
+      `https://www.google.com/maps?q=${coordinates.lat},${coordinates.lng}`;
 
     const createdAt = new Date().toISOString().slice(0, 19).replace("T", " ");
 
     const [result] = await db.query<ResultSetHeader>(
       `INSERT INTO umkm
-       (name, category, description, address, latitude, longitude, photos, phone, whatsapp, createdAt, status)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+       (name, category, description, address, latitude, longitude, maps_link, photos, phone, whatsapp, createdAt, status)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         name,
         category,
@@ -47,11 +66,12 @@ export const addUMKM = async (req: Request, res: Response) => {
         address,
         coordinates.lat,
         coordinates.lng,
-        JSON.stringify(photos),
+        mapsLink,
+        JSON.stringify(photos || []),
         phone || null,
         whatsapp || null,
         createdAt,
-        status,
+        status || "pending",
       ]
     );
 
@@ -67,9 +87,14 @@ export const addUMKM = async (req: Request, res: Response) => {
     };
 
     res.status(201).json(insertedUMKM);
-  } catch (err) {
+  } catch (err: any) {
     console.error(err);
-    res.status(500).json({ message: "Gagal menambahkan UMKM" });
+    res.status(500).json({
+      message:
+        err.code === "ER_DUP_ENTRY"
+          ? "Data UMKM sudah ada di database"
+          : "Gagal menambahkan UMKM",
+    });
   }
 };
 
@@ -89,8 +114,14 @@ export const approveUMKM = async (req: Request, res: Response) => {
     const { id } = req.params;
     await db.query("UPDATE umkm SET status = 'approved' WHERE id = ?", [id]);
 
-    const [rows] = await db.query<RowDataPacket[]>("SELECT * FROM umkm WHERE id = ?", [id]);
-    res.json({ ...rows[0], photos: rows[0].photos ? JSON.parse(rows[0].photos) : [] });
+    const [rows] = await db.query<RowDataPacket[]>(
+      "SELECT * FROM umkm WHERE id = ?",
+      [id]
+    );
+    res.json({
+      ...rows[0],
+      photos: rows[0].photos ? JSON.parse(rows[0].photos) : [],
+    });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Gagal approve UMKM" });
@@ -102,8 +133,14 @@ export const rejectUMKM = async (req: Request, res: Response) => {
     const { id } = req.params;
     await db.query("UPDATE umkm SET status = 'rejected' WHERE id = ?", [id]);
 
-    const [rows] = await db.query<RowDataPacket[]>("SELECT * FROM umkm WHERE id = ?", [id]);
-    res.json({ ...rows[0], photos: rows[0].photos ? JSON.parse(rows[0].photos) : [] });
+    const [rows] = await db.query<RowDataPacket[]>(
+      "SELECT * FROM umkm WHERE id = ?",
+      [id]
+    );
+    res.json({
+      ...rows[0],
+      photos: rows[0].photos ? JSON.parse(rows[0].photos) : [],
+    });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Gagal reject UMKM" });
