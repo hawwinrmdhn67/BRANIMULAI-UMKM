@@ -66,12 +66,12 @@ bot.on("message", async (msg) => {
         state.photoUrl = text;
         state.photos = [state.photoUrl];
         state.step++;
-        bot.sendMessage(chatId, "Nomor Telepon:");
+        bot.sendMessage(chatId, "Nomor Telepon :");
         break;
       case 7:
         state.phone = text;
         state.step++;
-        bot.sendMessage(chatId, "WhatsApp:");
+        bot.sendMessage(chatId, "WhatsApp :");
         break;
       case 8:
         state.whatsapp = text;
