@@ -23,3 +23,19 @@ Pastikan database sudah dibuat sebelum menjalankan perintah ini.
 Gunakan perintah berikut untuk menjalankan server backend:
 
 npm run dev ||
+
+telegram bot
+
+Install dependency
+
+cd telegram-bot
+npm install
+npm init -y
+npm install node-telegram-bot-api node-fetch@2 typescript ts-node @types/node
+npm i --save-dev @types/node-telegram-bot-api
+npx tsc --init
+
+untuk menjalankan servernya 
+
+cd telegram-bot
+npx ts-node bot.ts

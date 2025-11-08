@@ -12,7 +12,7 @@ import { Plus } from "lucide-react";
 import { toast } from "sonner";
 
 interface UMKMFormProps {
-  onAddUMKM?: (umkm: Omit<UMKM, "id" | "createdAt">) => void;
+  onAddUMKM?: (umkm: UMKM) => void; 
 }
 
 export function UMKMForm({ onAddUMKM }: UMKMFormProps) {
@@ -21,11 +21,19 @@ export function UMKMForm({ onAddUMKM }: UMKMFormProps) {
     category: "Makanan",
     description: "",
     address: "",
-    locationLink: "",
+    mapsLink: "",
     photoUrl: "",
     phone: "",
     whatsapp: "",
   });
+
+  const extractCoordinates = (url: string) => {
+    const regex = /@(-?\d+\.\d+),(-?\d+\.\d+)/;
+    const regex2 = /q=(-?\d+\.\d+),(-?\d+\.\d+)/;
+    const match = url.match(regex) || url.match(regex2);
+    if (match) return { lat: parseFloat(match[1]), lng: parseFloat(match[2]) };
+    return null;
+  };
 
   const handleCategoryChange = (value: string) =>
     setFormData({ ...formData, category: value });
@@ -33,40 +41,29 @@ export function UMKMForm({ onAddUMKM }: UMKMFormProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (
-      !formData.name ||
-      !formData.description ||
-      !formData.address ||
-      !formData.locationLink ||
-      !formData.photoUrl
-    ) {
+    if (!formData.name || !formData.description || !formData.address || !formData.mapsLink || !formData.photoUrl) {
       toast.error("Mohon lengkapi semua field yang wajib diisi");
       return;
     }
 
-    // basic URL validation for location link
-    try {
-      // eslint-disable-next-line no-new
-      new URL(formData.locationLink);
-    } catch (e) {
-      toast.error("Lokasi harus berupa link yang valid (contoh: https://www.google.com/maps?q=...")
+    const coords = extractCoordinates(formData.mapsLink);
+    if (!coords) {
+      toast.error("Link Google Maps tidak valid. Pastikan formatnya benar.");
       return;
     }
-
-    const status: "pending" | "approved" | "rejected" = "pending";
 
     const newUMKM: Omit<UMKM, "id" | "createdAt"> = {
       name: formData.name,
       category: formData.category,
       description: formData.description,
       address: formData.address,
-      // send as locationLink (backend will store as location_link)
-      // keep coordinates absent (or backend can read coordinates if provided)
-      locationLink: formData.locationLink,
+      coordinates: { lat: coords.lat, lng: coords.lng },
       photos: [formData.photoUrl],
       phone: formData.phone || undefined,
       whatsapp: formData.whatsapp || undefined,
-      status,
+      mapsLink: formData.mapsLink,
+      status: "pending",
+      message: ""
     };
 
     try {
@@ -76,29 +73,27 @@ export function UMKMForm({ onAddUMKM }: UMKMFormProps) {
         body: JSON.stringify(newUMKM),
       });
 
+      const savedUMKM: UMKM = await res.json();
+
       if (!res.ok) {
-        const errorData = await res.json().catch(() => ({}));
-        console.error("Backend error:", errorData);
-        toast.error(
-          "Gagal menambahkan UMKM: " + (errorData.message || res.statusText)
-        );
+        toast.error("Gagal menambahkan UMKM: " + (savedUMKM.message || res.statusText));
         return;
       }
 
       toast.success("UMKM berhasil ditambahkan! Menunggu persetujuan.");
-      
+
       setFormData({
         name: "",
         category: "Makanan",
         description: "",
         address: "",
-        locationLink: "",
+        mapsLink: "",
         photoUrl: "",
         phone: "",
         whatsapp: "",
       });
 
-      if (onAddUMKM) onAddUMKM(newUMKM);
+      if (onAddUMKM) onAddUMKM(savedUMKM); 
     } catch (err) {
       console.error("Fetch error:", err);
       toast.error("Gagal menambahkan UMKM. Cek console untuk detail.");
@@ -117,9 +112,7 @@ export function UMKMForm({ onAddUMKM }: UMKMFormProps) {
             <Input
               id="name"
               value={formData.name}
-              onChange={(e) =>
-                setFormData({ ...formData, name: e.target.value })
-              }
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               placeholder="Contoh: Warung Makan Bu Yanti"
               required
             />
@@ -143,9 +136,7 @@ export function UMKMForm({ onAddUMKM }: UMKMFormProps) {
             <Textarea
               id="description"
               value={formData.description}
-              onChange={(e) =>
-                setFormData({ ...formData, description: e.target.value })
-              }
+              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
               placeholder="Ceritakan tentang UMKM Anda..."
               rows={3}
               required
@@ -157,24 +148,20 @@ export function UMKMForm({ onAddUMKM }: UMKMFormProps) {
             <Input
               id="address"
               value={formData.address}
-              onChange={(e) =>
-                setFormData({ ...formData, address: e.target.value })
-              }
+              onChange={(e) => setFormData({ ...formData, address: e.target.value })}
               placeholder="Jl. Contoh No. 123, Jakarta"
               required
             />
           </div>
 
           <div>
-            <Label htmlFor="locationLink">Link Lokasi (Google Maps) *</Label>
+            <Label htmlFor="mapsLink">Link Google Maps *</Label>
             <Input
-              id="locationLink"
+              id="mapsLink"
               type="url"
-              value={formData.locationLink}
-              onChange={(e) =>
-                setFormData({ ...formData, locationLink: e.target.value })
-              }
-              placeholder="https://www.google.com/maps?q=-6.2088,106.8456"
+              value={formData.mapsLink}
+              onChange={(e) => setFormData({ ...formData, mapsLink: e.target.value })}
+              placeholder="https://www.google.com/maps/place/... atau https://goo.gl/maps/..."
               required
             />
           </div>
@@ -185,9 +172,7 @@ export function UMKMForm({ onAddUMKM }: UMKMFormProps) {
               id="photoUrl"
               type="url"
               value={formData.photoUrl}
-              onChange={(e) =>
-                setFormData({ ...formData, photoUrl: e.target.value })
-              }
+              onChange={(e) => setFormData({ ...formData, photoUrl: e.target.value })}
               placeholder="https://example.com/photo.jpg"
               required
             />
@@ -198,9 +183,7 @@ export function UMKMForm({ onAddUMKM }: UMKMFormProps) {
             <Input
               id="phone"
               value={formData.phone}
-              onChange={(e) =>
-                setFormData({ ...formData, phone: e.target.value })
-              }
+              onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
               placeholder="081234567890"
             />
           </div>
@@ -210,9 +193,7 @@ export function UMKMForm({ onAddUMKM }: UMKMFormProps) {
             <Input
               id="whatsapp"
               value={formData.whatsapp}
-              onChange={(e) =>
-                setFormData({ ...formData, whatsapp: e.target.value })
-              }
+              onChange={(e) => setFormData({ ...formData, whatsapp: e.target.value })}
               placeholder="6281234567890"
             />
           </div>

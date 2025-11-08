@@ -7,7 +7,7 @@ import { UMKMTabs } from "./UMKMTabs";
 
 interface AdminPageProps {
   umkmList: UMKM[];
-  onAddUMKM: (umkm: Omit<UMKM, "id" | "createdAt">) => void;
+  onAddUMKM: (umkm: UMKM) => void; // ✅ UMKM lengkap
   onDeleteUMKM: (id: string) => void;
   onApproveUMKM: (id: string) => void;
   onRejectUMKM: (id: string) => void;

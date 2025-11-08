@@ -1,4 +1,5 @@
 export interface UMKM {
+  message: string;
   id: string;
   name: string;
   category: string;
@@ -14,6 +15,7 @@ export interface UMKM {
   photos: string[];
   phone?: string;
   whatsapp?: string;
+  mapsLink?: string;
   createdAt: string;
   status: "pending" | "approved" | "rejected";
 }
