@@ -7,6 +7,7 @@ import { DetailPage } from "./components/DetailPage/Index";
 import { AdminPage } from "./components/AdminPage/Index";
 import { UMKM } from "./lib/types";
 import { Toaster } from "./components/ui/sonner";
+import { Footer } from "./components/Footer/Footer";
 
 type Page = "home" | "detail" | "admin";
 
@@ -125,6 +126,7 @@ export default function App() {
       )}
 
       <Toaster position="top-right" />
+      <Footer />
     </div>
   );
 }

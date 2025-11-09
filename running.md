@@ -32,6 +32,7 @@ cd telegram-bot
 npm install
 npm init -y
 npm install node-telegram-bot-api node-fetch@2 typescript ts-node @types/node
+npm install --save-dev @types/node-fetch
 npm i --save-dev @types/node-telegram-bot-api
 npx tsc --init
 
