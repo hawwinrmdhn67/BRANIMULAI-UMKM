@@ -5,10 +5,13 @@ import { Navbar } from "./components/Navbar/Navbar";
 import { HomePage } from "./components/HomePage/Index";
 import { DetailPage } from "./components/DetailPage/Index";
 import { AdminPage } from "./components/AdminPage/Index";
+import { HotSpot } from "./components/HotSpotPage/HotSpot";
+import { SellerSite } from "./components/SellerSite/Index";
+import { Footer } from "./components/Footer/Footer";
 import { UMKM } from "./lib/types";
 import { Toaster } from "./components/ui/sonner";
 
-type Page = "home" | "detail" | "admin";
+type Page = "home" | "detail" | "admin" | "hotspot" | "seller";
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState<Page>("home");
@@ -27,7 +30,11 @@ export default function App() {
 
         const parsedData: UMKM[] = data.map((u: any) => ({
           ...u,
-          photos: Array.isArray(u.photos) ? u.photos : typeof u.photos === "string" ? JSON.parse(u.photos) : [],
+          photos: Array.isArray(u.photos)
+            ? u.photos
+            : typeof u.photos === "string"
+            ? JSON.parse(u.photos)
+            : [],
         }));
 
         setUmkmList(parsedData);
@@ -41,7 +48,7 @@ export default function App() {
     fetchUMKM();
   }, []);
 
-  const handleNavigate = (page: "home" | "admin") => {
+  const handleNavigate = (page: Page) => {
     setCurrentPage(page);
     setSelectedUMKMId(null);
   };
@@ -61,7 +68,11 @@ export default function App() {
       ...prev,
       {
         ...savedUMKM,
-        photos: Array.isArray(savedUMKM.photos) ? savedUMKM.photos : typeof savedUMKM.photos === "string" ? JSON.parse(savedUMKM.photos) : [],
+        photos: Array.isArray(savedUMKM.photos)
+          ? savedUMKM.photos
+          : typeof savedUMKM.photos === "string"
+          ? JSON.parse(savedUMKM.photos)
+          : [],
       },
     ]);
   };
@@ -80,7 +91,18 @@ export default function App() {
       const res = await fetch(`${API_URL}/${id}/approve`, { method: "PUT" });
       const updated = await res.json();
       setUmkmList((prev) =>
-        prev.map((u) => (u.id === id ? { ...updated, photos: Array.isArray(updated.photos) ? updated.photos : typeof updated.photos === "string" ? JSON.parse(updated.photos) : [] } : u))
+        prev.map((u) =>
+          u.id === id
+            ? {
+                ...updated,
+                photos: Array.isArray(updated.photos)
+                  ? updated.photos
+                  : typeof updated.photos === "string"
+                  ? JSON.parse(updated.photos)
+                  : [],
+              }
+            : u
+        )
       );
     } catch (err) {
       console.error("Gagal approve UMKM:", err);
@@ -92,17 +114,32 @@ export default function App() {
       const res = await fetch(`${API_URL}/${id}/reject`, { method: "PUT" });
       const updated = await res.json();
       setUmkmList((prev) =>
-        prev.map((u) => (u.id === id ? { ...updated, photos: Array.isArray(updated.photos) ? updated.photos : typeof updated.photos === "string" ? JSON.parse(updated.photos) : [] } : u))
+        prev.map((u) =>
+          u.id === id
+            ? {
+                ...updated,
+                photos: Array.isArray(updated.photos)
+                  ? updated.photos
+                  : typeof updated.photos === "string"
+                  ? JSON.parse(updated.photos)
+                  : [],
+              }
+            : u
+        )
       );
     } catch (err) {
       console.error("Gagal reject UMKM:", err);
     }
   };
 
-  const selectedUMKM = selectedUMKMId ? umkmList.find((umkm) => umkm.id === selectedUMKMId) : null;
+  const selectedUMKM = selectedUMKMId
+    ? umkmList.find((umkm) => umkm.id === selectedUMKMId)
+    : null;
+
   const pendingCount = umkmList.filter((u) => u.status === "pending").length;
 
-  if (loading) return <div className="text-center mt-10">Memuat data...</div>;
+  if (loading)
+    return <div className="text-center mt-10">Memuat data...</div>;
 
   return (
     <div className="min-h-screen">
@@ -112,8 +149,18 @@ export default function App() {
         pendingCount={pendingCount}
       />
 
-      {currentPage === "home" && <HomePage umkmList={umkmList} onViewDetail={handleViewDetail} />}
-      {currentPage === "detail" && selectedUMKM && <DetailPage umkm={selectedUMKM} onBack={handleBack} />}
+      {currentPage === "home" && (
+        <HomePage umkmList={umkmList} onViewDetail={handleViewDetail} />
+      )}
+
+      {currentPage === "hotspot" && <HotSpot />}
+
+      {currentPage === "seller" && <SellerSite />}
+
+      {currentPage === "detail" && selectedUMKM && (
+        <DetailPage umkm={selectedUMKM} onBack={handleBack} />
+      )}
+
       {currentPage === "admin" && (
         <AdminPage
           umkmList={umkmList}
@@ -124,6 +171,7 @@ export default function App() {
         />
       )}
 
+      <Footer />
       <Toaster position="top-right" />
     </div>
   );
