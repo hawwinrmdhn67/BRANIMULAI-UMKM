@@ -1,13 +1,16 @@
 import mysql from "mysql2/promise";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 export const db = mysql.createPool({
-  host: "l8u6ih.h.filess.io",
-  user: "branimulai_db_maybeeast",       
-  password: "56c8c600dbfc34f99b94f2c7096242b4e89ff537",       
-  database: "branimulai_db_maybeeast",
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,     
+  password: process.env.DB_PASSWORD,       
+  database: process.env.DB_NAME,
   waitForConnections: true,
   connectionLimit: 10,
-  port: 3305,
+  port: parseInt(process.env.DB_PORT || "3305"),
 });
 
 (async () => {
