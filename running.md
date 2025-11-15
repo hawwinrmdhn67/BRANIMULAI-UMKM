@@ -9,6 +9,7 @@ Jalankan perintah berikut untuk menginstal semua package yang dibutuhkan:
 4. npm install express cors 
 5. npm install mysql2 
 6. npm install --save-dev @types/express @types/cors @types/mysql2 
+npm install --save-dev typescript
 
 🌱 Seeder Data ke Database MySQL
 
