@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Plus, Trash2, Calculator, DollarSign, TrendingUp, BookOpen, TrendingDown, Package, Users } from 'lucide-react';
+import { Plus, Trash2, Calculator, DollarSign, TrendingUp, BookOpen, Package, Users } from 'lucide-react';
 
 interface Material {
   id: string;
@@ -15,13 +15,13 @@ export function SellerSite() {
   const [productName, setProductName] = useState('');
   const [laborCost, setLaborCost] = useState(0);
   const [overheadCost, setOverheadCost] = useState(0);
-  const [profitMargin, setProfitMargin] = useState(30);
+  const [productUnit, setProductUnit] = useState(100);
 
   const [newMaterial, setNewMaterial] = useState({
     name: '',
     price: 0,
-    quantity: 0,
-    unit: 'pcs'
+    quantity: 1,
+    unit: 'kg'
   });
 
   const addMaterial = () => {
@@ -31,7 +31,7 @@ export function SellerSite() {
         ...newMaterial
       };
       setMaterials([...materials, material]);
-      setNewMaterial({ name: '', price: 0, quantity: 0, unit: 'pcs' });
+      setNewMaterial({ name: '', price: 0, quantity: 1, unit: 'kg' });
     }
   };
 
@@ -39,33 +39,34 @@ export function SellerSite() {
     setMaterials(materials.filter(m => m.id !== id));
   };
 
-  const totalMaterialCost = materials.reduce((sum, m) => sum + (m.price * m.quantity), 0);
-  const totalHPP = totalMaterialCost + laborCost + overheadCost;
-  const suggestedPrice = totalHPP + (totalHPP * profitMargin / 100);
-  const profitAmount = suggestedPrice - totalHPP;
+  
+  const totalMaterialCost = materials.reduce((sum, m) => sum + m.price, 0);
+  const totalCost = totalMaterialCost + laborCost + overheadCost;
+  const hppPerUnit = productUnit > 0 ? totalCost / productUnit : 0;
 
   const tabs = [
     { id: 'calculator', label: 'Kalkulator HPP', icon: Calculator },
     { id: 'tips', label: 'Tips Bisnis', icon: BookOpen },
-    { id: 'products', label: 'Manajemen Produk', icon: Package },
+    { id: 'simulation', label: 'Simulasi Laba Rugi', icon: Package },
+    { id: 'pencatatan', label: 'Pencatatan Harian', icon: Package },
     { id: 'marketing', label: 'Strategi Pemasaran', icon: Users }
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50 py-6 sm:py-8 lg:py-12">
+    <div className="sellersite-wrapper min-h-screen bg-gray-50 py-6 sm:py-8 lg:py-12">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
         {/* Header */}
-        <div className="bg-white rounded-2xl p-4 sm:p-6 lg:p-8 mb-6 shadow-lg border border-green-100">
+        <div className="bg-white rounded-xl p-4 sm:p-6 mb-6 shadow-sm border border-gray-200">
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-6">
-            <div className="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center shadow-lg">
-              <Calculator className="w-7 h-7 sm:w-8 sm:h-8 text-white" />
+            <div className="w-12 h-12 sm:w-14 sm:h-14 bg-green-600 rounded-xl flex items-center justify-center shadow-md">
+              <Calculator className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
             </div>
             <div className="flex-1">
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-1">
-                Seller Hub UMKM
+              <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-1">
+                Seller Site BraniMulai
               </h1>
               <p className="text-sm sm:text-base text-gray-600">
-                Kelola bisnis Anda dengan lebih mudah dan profesional
+                  Hadir sebagai Alat Bantu Seller untuk memudahkan para seller dalam mengelola UMKM mereka
               </p>
             </div>
           </div>
@@ -78,13 +79,13 @@ export function SellerSite() {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl font-medium text-sm sm:text-base transition-all ${
+                  className={`flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-lg font-medium text-sm transition-all ${
                     activeTab === tab.id
-                      ? 'bg-gradient-to-r from-green-500 to-emerald-600 text-white shadow-md'
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                      ? 'bg-green-600 text-white shadow-sm'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   }`}
                 >
-                  <Icon className="w-4 h-4 sm:w-5 sm:h-5" />
+                  <Icon className="w-4 h-4" />
                   <span className="hidden sm:inline">{tab.label}</span>
                   <span className="sm:hidden">{tab.label.split(' ')[0]}</span>
                 </button>
@@ -95,295 +96,357 @@ export function SellerSite() {
 
         {/* Content Based on Active Tab */}
         {activeTab === 'calculator' && (
-          <>
-            {/* Product Name Section */}
-            <div className="bg-white rounded-2xl p-4 sm:p-6 mb-6 shadow-lg border border-green-100">
-              <label className="text-sm sm:text-base font-semibold mb-3 block text-gray-700">
-                Nama Produk
-              </label>
-              <input
-                type="text"
-                value={productName}
-                onChange={(e) => setProductName(e.target.value)}
-                placeholder="Contoh: Tas Rajut Handmade"
-                className="w-full px-4 py-3 sm:py-3.5 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all text-sm sm:text-base"
-              />
-            </div>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6">
+            {/* Left Sidebar - Panduan */}
+            <div className="lg:col-span-3">
+              <div className="bg-gradient-to-br from-yellow-50 to-amber-50 rounded-xl p-4 border-2 border-yellow-200 lg:sticky lg:top-6">
+                <div className="flex items-center gap-2 mb-4 pb-3 border-b border-yellow-200">
+                  <span className="text-xl">💡</span>
+                  <h3 className="font-bold text-gray-900 text-sm">Panduan Mudah Menghitung HPP</h3>
+                </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
-              {/* Input Section */}
-              <div className="lg:col-span-2 space-y-4 sm:space-y-6">
-                {/* Bahan Baku */}
-                <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-lg border border-green-100">
-                  <div className="flex items-center gap-3 mb-4 sm:mb-6">
-                    <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                      <span className="text-lg font-bold text-green-600">1</span>
-                    </div>
-                    <h2 className="text-base sm:text-lg font-bold text-gray-900">
-                      Bahan Baku & Material
-                    </h2>
-                  </div>
-                  
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-4">
-                    <div className="sm:col-span-2">
-                      <label className="text-xs sm:text-sm font-medium text-gray-700 mb-2 block">
-                        Nama Bahan
-                      </label>
-                      <input
-                        type="text"
-                        value={newMaterial.name}
-                        onChange={(e) => setNewMaterial({...newMaterial, name: e.target.value})}
-                        placeholder="Contoh: Benang Rajut"
-                        className="w-full px-3 sm:px-4 py-2 sm:py-2.5 border-2 border-gray-200 rounded-lg text-sm focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all"
-                      />
-                    </div>
-                    <div>
-                      <label className="text-xs sm:text-sm font-medium text-gray-700 mb-2 block">
-                        Harga per Unit (Rp)
-                      </label>
-                      <input
-                        type="number"
-                        value={newMaterial.price || ''}
-                        onChange={(e) => setNewMaterial({...newMaterial, price: Number(e.target.value)})}
-                        placeholder="0"
-                        className="w-full px-3 sm:px-4 py-2 sm:py-2.5 border-2 border-gray-200 rounded-lg text-sm focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all"
-                      />
-                    </div>
-                    <div>
-                      <label className="text-xs sm:text-sm font-medium text-gray-700 mb-2 block">
-                        Jumlah
-                      </label>
-                      <input
-                        type="number"
-                        value={newMaterial.quantity || ''}
-                        onChange={(e) => setNewMaterial({...newMaterial, quantity: Number(e.target.value)})}
-                        placeholder="0"
-                        className="w-full px-3 sm:px-4 py-2 sm:py-2.5 border-2 border-gray-200 rounded-lg text-sm focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all"
-                      />
-                    </div>
-                    <div className="sm:col-span-2">
-                      <label className="text-xs sm:text-sm font-medium text-gray-700 mb-2 block">
-                        Satuan
-                      </label>
-                      <select
-                        value={newMaterial.unit}
-                        onChange={(e) => setNewMaterial({...newMaterial, unit: e.target.value})}
-                        className="w-full px-3 sm:px-4 py-2 sm:py-2.5 border-2 border-gray-200 rounded-lg text-sm focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all"
-                      >
-                        <option value="pcs">Pcs</option>
-                        <option value="kg">Kg</option>
-                        <option value="gram">Gram</option>
-                        <option value="meter">Meter</option>
-                        <option value="liter">Liter</option>
-                        <option value="ml">Ml</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <button
-                    onClick={addMaterial}
-                    className="w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white py-3 sm:py-3.5 rounded-xl flex items-center justify-center gap-2 hover:from-green-600 hover:to-emerald-700 transition-all shadow-md hover:shadow-lg font-medium text-sm sm:text-base"
-                  >
-                    <Plus className="w-5 h-5" />
-                    Tambah Bahan
-                  </button>
-
-                  {/* Material List */}
-                  {materials.length > 0 && (
-                    <div className="mt-4 sm:mt-6 space-y-2 sm:space-y-3">
-                      <p className="text-xs sm:text-sm font-semibold text-gray-700 mb-2">
-                        Daftar Bahan ({materials.length})
-                      </p>
-                      {materials.map((material) => (
-                        <div key={material.id} className="flex items-center justify-between p-3 sm:p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-200">
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm sm:text-base font-semibold text-gray-900 truncate">
-                              {material.name}
-                            </p>
-                            <p className="text-xs sm:text-sm text-gray-600 mt-1">
-                              {material.quantity} {material.unit} × Rp {material.price.toLocaleString('id-ID')} = 
-                              <span className="font-bold text-green-700 ml-1">
-                                Rp {(material.price * material.quantity).toLocaleString('id-ID')}
-                              </span>
-                            </p>
-                          </div>
-                          <button
-                            onClick={() => removeMaterial(material.id)}
-                            className="text-red-600 hover:text-red-700 hover:bg-red-100 p-2 rounded-lg transition-all ml-2"
-                          >
-                            <Trash2 className="w-4 h-4 sm:w-5 sm:h-5" />
-                          </button>
+                <div className="space-y-4">
+                  <div className="bg-white rounded-lg p-3 shadow-sm">
+                    <div className="flex items-start gap-2 mb-2">
+                      <span className="text-base">📝</span>
+                      <div>
+                        <p className="font-bold text-gray-900 text-xs mb-1">Langkah 1 - Input Bahan:</p>
+                        <div className="text-xs text-gray-600 leading-relaxed space-y-1">
+                          <p>• <span className="font-semibold">Nama</span>: Tulis nama bahan</p>
+                          <p>• <span className="font-semibold">Jumlah</span>: Masukkan angka (bisa desimal)</p>
+                          <p>• <span className="font-semibold">Satuan</span>: Pilih kg/gram/liter/pcs/dll</p>
+                          <p>• <span className="font-semibold">Harga</span>: Total harga untuk jumlah tersebut</p>
                         </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-
-                {/* Biaya Lain */}
-                <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-lg border border-green-100">
-                  <div className="flex items-center gap-3 mb-4 sm:mb-6">
-                    <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                      <span className="text-lg font-bold text-green-600">2</span>
-                    </div>
-                    <h2 className="text-base sm:text-lg font-bold text-gray-900">
-                      Biaya Produksi Lainnya
-                    </h2>
-                  </div>
-                  
-                  <div className="space-y-4 sm:space-y-5">
-                    <div>
-                      <label className="text-xs sm:text-sm font-semibold mb-2 block text-gray-700">
-                        Biaya Tenaga Kerja (Rp)
-                      </label>
-                      <input
-                        type="number"
-                        value={laborCost || ''}
-                        onChange={(e) => setLaborCost(Number(e.target.value))}
-                        placeholder="0"
-                        className="w-full px-4 py-3 sm:py-3.5 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all text-sm sm:text-base"
-                      />
-                      <p className="text-xs text-gray-500 mt-2">
-                        💼 Upah pembuat atau biaya produksi
-                      </p>
-                    </div>
-
-                    <div>
-                      <label className="text-xs sm:text-sm font-semibold mb-2 block text-gray-700">
-                        Biaya Overhead (Rp)
-                      </label>
-                      <input
-                        type="number"
-                        value={overheadCost || ''}
-                        onChange={(e) => setOverheadCost(Number(e.target.value))}
-                        placeholder="0"
-                        className="w-full px-4 py-3 sm:py-3.5 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all text-sm sm:text-base"
-                      />
-                      <p className="text-xs text-gray-500 mt-2">
-                        ⚡ Listrik, sewa tempat, packaging, dll
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Margin Keuntungan */}
-                <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-lg border border-green-100">
-                  <div className="flex items-center gap-3 mb-4 sm:mb-6">
-                    <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                      <span className="text-lg font-bold text-green-600">3</span>
-                    </div>
-                    <h2 className="text-base sm:text-lg font-bold text-gray-900">
-                      Target Keuntungan
-                    </h2>
-                  </div>
-                  
-                  <div>
-                    <div className="flex items-center justify-between mb-3">
-                      <label className="text-xs sm:text-sm font-semibold text-gray-700">
-                        Margin Keuntungan
-                      </label>
-                      <span className="text-2xl sm:text-3xl font-bold text-green-600">
-                        {profitMargin}%
-                      </span>
-                    </div>
-                    <input
-                      type="range"
-                      min="0"
-                      max="100"
-                      value={profitMargin}
-                      onChange={(e) => setProfitMargin(Number(e.target.value))}
-                      className="w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-green-600"
-                    />
-                    <div className="flex justify-between text-xs text-gray-500 mt-2">
-                      <span>0%</span>
-                      <span>25%</span>
-                      <span>50%</span>
-                      <span>75%</span>
-                      <span>100%</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Result Section */}
-              <div className="lg:col-span-1">
-                <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-lg border border-green-100 lg:sticky lg:top-6">
-                  <h2 className="text-base sm:text-lg font-bold text-gray-900 mb-4 sm:mb-6">
-                    📊 Hasil Perhitungan
-                  </h2>
-
-                  <div className="space-y-3 sm:space-y-4 mb-6">
-                    <div className="flex justify-between items-center pb-3 border-b-2 border-gray-100">
-                      <span className="text-xs sm:text-sm text-gray-600">Total Bahan Baku</span>
-                      <span className="text-sm sm:text-base font-bold text-gray-900">
-                        Rp {totalMaterialCost.toLocaleString('id-ID')}
-                      </span>
-                    </div>
-                    <div className="flex justify-between items-center pb-3 border-b-2 border-gray-100">
-                      <span className="text-xs sm:text-sm text-gray-600">Biaya Tenaga Kerja</span>
-                      <span className="text-sm sm:text-base font-bold text-gray-900">
-                        Rp {laborCost.toLocaleString('id-ID')}
-                      </span>
-                    </div>
-                    <div className="flex justify-between items-center pb-3 border-b-2 border-gray-100">
-                      <span className="text-xs sm:text-sm text-gray-600">Biaya Overhead</span>
-                      <span className="text-sm sm:text-base font-bold text-gray-900">
-                        Rp {overheadCost.toLocaleString('id-ID')}
-                      </span>
+                        <p className="text-xs text-green-600 mt-2 font-medium bg-green-50 p-2 rounded">
+                          📌 Contoh: Gula 5 kg harga Rp 75.000
+                        </p>
+                      </div>
                     </div>
                   </div>
 
-                  <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-4 sm:p-5 mb-4 border-2 border-green-200">
-                    <div className="flex items-center gap-2 mb-2">
-                      <DollarSign className="w-5 h-5 sm:w-6 sm:h-6 text-green-600" />
-                      <span className="text-sm sm:text-base font-bold text-green-900">
-                        Total HPP
-                      </span>
-                    </div>
-                    <p className="text-2xl sm:text-3xl font-bold text-green-700">
-                      Rp {totalHPP.toLocaleString('id-ID')}
-                    </p>
-                  </div>
-
-                  <div className="bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl p-4 sm:p-5 text-white mb-4 sm:mb-6 shadow-lg">
-                    <div className="flex items-center gap-2 mb-2">
-                      <TrendingUp className="w-5 h-5 sm:w-6 sm:h-6" />
-                      <span className="text-sm sm:text-base font-bold">
-                        Harga Jual Disarankan
-                      </span>
-                    </div>
-                    <p className="text-3xl sm:text-4xl font-bold mb-2">
-                      Rp {suggestedPrice.toLocaleString('id-ID')}
-                    </p>
-                    <div className="bg-white/20 rounded-lg p-2 mt-3">
-                      <p className="text-xs sm:text-sm">
-                        💰 Keuntungan Bersih: <span className="font-bold">Rp {profitAmount.toLocaleString('id-ID')}</span>
-                      </p>
+                  <div className="bg-white rounded-lg p-3 shadow-sm">
+                    <div className="flex items-start gap-2 mb-2">
+                      <span className="text-base">⚡</span>
+                      <div>
+                        <p className="font-bold text-gray-900 text-xs mb-1">Langkah 2 - Biaya Tenaga Kerja:</p>
+                        <p className="text-xs text-gray-600 leading-relaxed">
+                          Masukkan total biaya tenaga kerja untuk proses produksi.
+                        </p>
+                        <p className="text-xs text-green-600 mt-1 font-medium">
+                          Contoh: Upah karyawan Rp 50.000/hari
+                        </p>
+                      </div>
                     </div>
                   </div>
 
-                  <div className="text-xs sm:text-sm bg-gradient-to-br from-amber-50 to-orange-50 p-4 rounded-xl border border-amber-200">
-                    <p className="font-bold mb-2 text-amber-900 flex items-center gap-2">
-                      <span className="text-base">💡</span> Tips Pricing
-                    </p>
-                    <ul className="space-y-1.5 text-gray-700">
-                      <li className="flex items-start gap-2">
-                        <span className="text-green-600 mt-0.5">✓</span>
-                        <span>Riset harga kompetitor</span>
+                  <div className="bg-white rounded-lg p-3 shadow-sm">
+                    <div className="flex items-start gap-2 mb-2">
+                      <span className="text-base">💡</span>
+                      <div>
+                        <p className="font-bold text-gray-900 text-xs mb-1">Langkah 3 - Biaya Overhead:</p>
+                        <p className="text-xs text-gray-600 leading-relaxed">
+                          Masukkan total biaya overhead (listrik, gas, sewa tempat, dll).
+                        </p>
+                        <p className="text-xs text-green-600 mt-1 font-medium">
+                          Contoh: Listrik + gas + sewa = Rp 40.000/hari
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bg-white rounded-lg p-3 shadow-sm">
+                    <div className="flex items-start gap-2 mb-2">
+                      <span className="text-base">🎯</span>
+                      <div>
+                        <p className="font-bold text-gray-900 text-xs mb-1">Langkah 4 - Jumlah Produk:</p>
+                        <p className="text-xs text-gray-600 leading-relaxed">
+                          Masukkan <span className="font-semibold text-gray-900">total produk yang dihasilkan</span> dari bahan yang dibeli.
+                        </p>
+                        <p className="text-xs text-green-600 mt-1 font-medium">
+                          Contoh: Dari bahan di atas bisa 100 gelas es teh
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bg-gradient-to-r from-green-500 to-green-600 rounded-lg p-3 text-white shadow-md">
+                    <p className="font-bold text-xs mb-2">📊 Cara Kerja Kalkulator:</p>
+                    <div className="space-y-1.5 text-xs">
+                      <p className="leading-relaxed">1. Gula 5kg = Rp 75.000</p>
+                      <p className="leading-relaxed">2. Teh 25pcs = Rp 12.500</p>
+                      <p className="leading-relaxed">3. Total Bahan = Rp 87.500</p>
+                      <p className="leading-relaxed">4. + Tenaga Kerja + Overhead = Total Biaya</p>
+                      <p className="leading-relaxed">5. HPP = Total Biaya ÷ Jumlah Produk</p>
+                    </div>
+                  </div>
+
+                  <div className="bg-white rounded-lg p-3 shadow-sm border-2 border-amber-200">
+                    <p className="font-bold text-xs mb-2 text-gray-900">💰 Pilih Margin Keuntungan:</p>
+                    <ul className="space-y-1 text-xs text-gray-600">
+                      <li className="flex items-start gap-1.5">
+                        <span className="text-green-600 font-bold">•</span>
+                        <span><span className="font-semibold">25%</span>: Harga jual Rp 1.444 (untung Rp 269)</span>
                       </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-green-600 mt-0.5">✓</span>
-                        <span>Pertimbangkan nilai unik produk</span>
+                      <li className="flex items-start gap-1.5">
+                        <span className="text-green-600 font-bold">•</span>
+                        <span><span className="font-semibold">35%</span>: Harga jual Rp 1.654 (untung Rp 579)</span>
                       </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-green-600 mt-0.5">✓</span>
-                        <span>Sesuaikan dengan target pasar</span>
+                      <li className="flex items-start gap-1.5">
+                        <span className="text-green-600 font-bold">•</span>
+                        <span><span className="font-semibold">50%</span>: Harga jual Rp 2.150 (untung Rp 1.075)</span>
                       </li>
                     </ul>
                   </div>
                 </div>
               </div>
             </div>
-          </>
+
+            {/* Main Content */}
+            <div className="lg:col-span-9 space-y-4 sm:space-y-6">
+              {/* Product Name */}
+              <div className="bg-white rounded-xl p-4 sm:p-6 shadow-sm border border-gray-200">
+                <h2 className="text-base font-bold text-gray-900 mb-3">Informasi Produk</h2>
+                <div>
+                  <label className="text-sm font-medium mb-2 block text-gray-700">Nama Produk</label>
+                  <input
+                    type="text"
+                    value={productName}
+                    onChange={(e) => setProductName(e.target.value)}
+                    placeholder="Contoh: Es Teh, Nasi Goreng, Bakso"
+                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500 transition-all text-sm"
+                  />
+                </div>
+              </div>
+
+              {/* Bahan Baku */}
+              <div className="bg-white rounded-xl p-4 sm:p-6 shadow-sm border border-gray-200">
+                <div className="flex items-center gap-2 mb-4">
+                  <span className="text-lg">📝</span>
+                  <h2 className="text-base font-bold text-gray-900">Bahan yang Dibeli</h2>
+                </div>
+                
+                <div className="grid grid-cols-1 gap-3 mb-4">
+                  <div>
+                    <label className="text-xs font-medium text-gray-700 mb-1.5 block">Nama Bahan</label>
+                    <input
+                      type="text"
+                      value={newMaterial.name}
+                      onChange={(e) => setNewMaterial({...newMaterial, name: e.target.value})}
+                      placeholder="Contoh: Gula pasir, Teh celup, Minyak goreng"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500"
+                    />
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="text-xs font-medium text-gray-700 mb-1.5 block">Jumlah</label>
+                      <input
+                        type="number"
+                        value={newMaterial.quantity || ''}
+                        onChange={(e) => setNewMaterial({...newMaterial, quantity: Number(e.target.value)})}
+                        placeholder="Contoh: 5"
+                        min="0"
+                        step="0.1"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-xs font-medium text-gray-700 mb-1.5 block">Satuan</label>
+                      <select
+                        value={newMaterial.unit}
+                        onChange={(e) => setNewMaterial({...newMaterial, unit: e.target.value})}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500"
+                      >
+                        <option value="kg">Kilogram (kg)</option>
+                        <option value="gram">Gram (gr)</option>
+                        <option value="liter">Liter (L)</option>
+                        <option value="ml">Mililiter (ml)</option>
+                        <option value="pcs">Pieces (pcs)</option>
+                        <option value="box">Box</option>
+                        <option value="pack">Pack</option>
+                        <option value="botol">Botol</option>
+                        <option value="kaleng">Kaleng</option>
+                        <option value="sachet">Sachet</option>
+                        <option value="meter">Meter (m)</option>
+                        <option value="lembar">Lembar</option>
+                      </select>
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <label className="text-xs font-medium text-gray-700 mb-1.5 block">
+                      Harga Total untuk {newMaterial.quantity || '...'} {newMaterial.unit}
+                    </label>
+                    <div className="relative">
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm font-semibold">Rp</span>
+                      <input
+                        type="number"
+                        value={newMaterial.price || ''}
+                        onChange={(e) => setNewMaterial({...newMaterial, price: Number(e.target.value)})}
+                        placeholder="Contoh: 75000"
+                        min="0"
+                        className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500"
+                      />
+                    </div>
+                    <p className="text-xs text-gray-500 mt-1 flex items-start gap-1">
+                      <span>💡</span>
+                      <span>
+                        Masukkan harga pembelian untuk <span className="font-semibold text-gray-700">{newMaterial.quantity || '...'} {newMaterial.unit}</span> ini
+                      </span>
+                    </p>
+                  </div>
+                </div>
+
+                <button
+                  onClick={addMaterial}
+                  className="w-full bg-green-600 text-white py-2.5 rounded-lg flex items-center justify-center gap-2 hover:bg-green-700 transition-all font-medium text-sm shadow-sm"
+                >
+                  <Plus className="w-4 h-4" />
+                  Tambah Bahan
+                </button>
+
+                {/* Material List */}
+                {materials.length > 0 && (
+                  <div className="mt-4 space-y-2">
+                    <p className="text-xs font-bold text-gray-900 mb-2 flex items-center justify-between">
+                      <span>Total Pembelian Bahan:</span>
+                      <span className="text-green-600 text-base">Rp {totalMaterialCost.toLocaleString('id-ID')}</span>
+                    </p>
+                    {materials.map((material) => (
+                      <div key={material.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200">
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-semibold text-gray-900">{material.name}</p>
+                          <p className="text-xs text-gray-600">
+                            {material.quantity} {material.unit} = 
+                            <span className="font-bold text-gray-900 ml-1">
+                              Rp {material.price.toLocaleString('id-ID')}
+                            </span>
+                          </p>
+                        </div>
+                        <button
+                          onClick={() => removeMaterial(material.id)}
+                          className="text-red-600 hover:bg-red-50 p-1.5 rounded transition-all ml-2"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Biaya Operasional */}
+              <div className="bg-white rounded-xl p-4 sm:p-6 shadow-sm border border-gray-200">
+                <h2 className="text-base font-bold text-gray-900 mb-4">Biaya Operasional</h2>
+                
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
+                    <div className="flex items-center gap-2 mb-3">
+                      <span className="text-base">⚡</span>
+                      <label className="text-sm font-bold text-gray-900">Biaya Tenaga Kerja per Unit (Rp)</label>
+                    </div>
+                    <div className="relative">
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">Rp</span>
+                      <input
+                        type="number"
+                        value={laborCost || ''}
+                        onChange={(e) => setLaborCost(Number(e.target.value))}
+                        placeholder="0"
+                        className="w-full pl-10 pr-3 py-2.5 border border-amber-300 rounded-lg focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500 bg-white"
+                      />
+                    </div>
+                    <p className="text-xs text-amber-700 mt-2 flex items-start gap-1">
+                      <span>💡</span>
+                      <span>Cara hitung: Gaji per hari ÷ jumlah produk per hari. Contoh: Rp 100.000 ÷ 500 = Rp 200</span>
+                    </p>
+                  </div>
+
+                  <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                    <div className="flex items-center gap-2 mb-3">
+                      <span className="text-base">💡</span>
+                      <label className="text-sm font-bold text-gray-900">Biaya Overhead per Unit (Rp)</label>
+                    </div>
+                    <div className="relative">
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">Rp</span>
+                      <input
+                        type="number"
+                        value={overheadCost || ''}
+                        onChange={(e) => setOverheadCost(Number(e.target.value))}
+                        placeholder="0"
+                        className="w-full pl-10 pr-3 py-2.5 border border-green-300 rounded-lg focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500 bg-white"
+                      />
+                    </div>
+                    <p className="text-xs text-green-700 mt-2 flex items-start gap-1">
+                      <span>💡</span>
+                      <span>Cara hitung: Total biaya bulanan (listrik, sewa, dll) ÷ jumlah produksi. Contoh: Rp 2.000.000 ÷ 10.000 = Rp 200</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Jumlah Produk */}
+              <div className="bg-white rounded-xl p-4 sm:p-6 shadow-sm border border-gray-200">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="text-lg">🎯</span>
+                  <h2 className="text-base font-bold text-gray-900">Jumlah Produk yang Dihasilkan</h2>
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-gray-700 mb-2 block">Jumlah Produk (Unit)</label>
+                  <input
+                    type="number"
+                    value={productUnit || ''}
+                    onChange={(e) => setProductUnit(Number(e.target.value))}
+                    placeholder="Contoh: 100, 500, 1000"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500 text-sm"
+                  />
+                  <p className="text-xs text-amber-600 mt-2 bg-amber-50 border border-amber-200 rounded-lg p-3">
+                    <span className="font-bold">💡 Contoh:</span> Dari bahan yang dibeli bisa menghasilkan 100 gelas es teh
+                  </p>
+                </div>
+              </div>
+
+              {/* Hasil & Hitung HPP */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-6 border-2 border-green-300">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Calculator className="w-5 h-5 text-green-700" />
+                    <span className="text-sm font-bold text-green-900">Total HPP per Unit</span>
+                  </div>
+                  <p className="text-3xl font-bold text-green-700">
+                    Rp {Math.round(hppPerUnit).toLocaleString('id-ID')}
+                  </p>
+                  <p className="text-xs text-green-600 mt-2">
+                    Total Biaya: Rp {totalCost.toLocaleString('id-ID')} ÷ {productUnit} unit
+                  </p>
+                </div>
+
+                <div className="bg-gradient-to-r from-green-600 to-green-700 text-white rounded-xl p-6 shadow-lg flex flex-col items-center justify-center gap-2">
+                  <Calculator className="w-6 h-6" />
+                  <span className="font-bold text-lg">Hasil Perhitungan</span>
+                  <p className="text-xs text-center text-green-100">HPP sudah otomatis terhitung</p>
+                </div>
+              </div>
+
+              {/* Contoh & Reset Buttons */}
+              <div className="flex gap-3">
+                <button className="flex-1 bg-white border-2 border-gray-300 text-gray-700 py-3 rounded-lg hover:bg-gray-50 transition-all font-medium text-sm flex items-center justify-center gap-2">
+                  <span>📋</span> Contoh
+                </button>
+                <button 
+                  onClick={() => {
+                    setMaterials([]);
+                    setProductName('');
+                    setLaborCost(0);
+                    setOverheadCost(0);
+                    setProductUnit(100);
+                  }}
+                  className="flex-1 bg-white border-2 border-gray-300 text-gray-700 py-3 rounded-lg hover:bg-gray-50 transition-all font-medium text-sm"
+                >
+                  Reset
+                </button>
+              </div>
+            </div>
+          </div>
         )}
 
         {activeTab === 'tips' && (
@@ -421,15 +484,34 @@ export function SellerSite() {
           </div>
         )}
 
-        {activeTab === 'products' && (
-          <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-lg border border-green-100">
+        {activeTab === 'simulation' && (
+          <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-lg border border-gray-200">
             <div className="text-center py-12">
               <Package className="w-16 h-16 sm:w-20 sm:h-20 text-green-500 mx-auto mb-4" />
               <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
-                Manajemen Produk
+                Simulasi Laba Rugi
               </h3>
               <p className="text-sm sm:text-base text-gray-600 mb-6">
-                Fitur ini akan segera hadir untuk membantu Anda mengelola katalog produk
+                Fitur ini akan segera hadir untuk membantu Anda men-Simulasikan Laba rugi
+              </p>
+              <div className="inline-block bg-green-50 border border-green-200 rounded-xl px-6 py-3">
+                <p className="text-sm font-medium text-green-700">
+                  🎉 Coming Soon
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
+         {activeTab === 'pencatatan' && (
+          <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-lg border border-gray-200">
+            <div className="text-center py-12">
+              <Package className="w-16 h-16 sm:w-20 sm:h-20 text-green-500 mx-auto mb-4" />
+              <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
+                Pencatatan Transaksi harian
+              </h3>
+              <p className="text-sm sm:text-base text-gray-600 mb-6">
+                Fitur ini akan segera hadir untuk membantu Anda mengelola Transaksi produk harian anda secara manual/otomatis
               </p>
               <div className="inline-block bg-green-50 border border-green-200 rounded-xl px-6 py-3">
                 <p className="text-sm font-medium text-green-700">
@@ -491,7 +573,7 @@ export function SellerSite() {
 
 function TipsCard({ icon, title, description }: { icon: string; title: string; description: string }) {
   return (
-    <div className="bg-white rounded-2xl p-5 sm:p-6 shadow-lg border border-green-100 hover:shadow-xl transition-all hover:-translate-y-1">
+    <div className="bg-white rounded-2xl p-5 sm:p-6 shadow-lg border border-gray-200 hover:shadow-xl transition-all hover:-translate-y-1">
       <div className="text-4xl mb-4">{icon}</div>
       <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-2">{title}</h3>
       <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">{description}</p>
@@ -501,9 +583,9 @@ function TipsCard({ icon, title, description }: { icon: string; title: string; d
 
 function MarketingCard({ title, items }: { title: string; items: string[] }) {
   return (
-    <div className="bg-white rounded-2xl p-5 sm:p-6 shadow-lg border border-green-100">
+    <div className="bg-white rounded-2xl p-5 sm:p-6 shadow-lg border border-gray-200">
       <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-        <span className="w-2 h-8 bg-gradient-to-b from-green-500 to-emerald-600 rounded-full"></span>
+        <span className="w-2 h-8 bg-gradient-to-b from-green-500 to-green-600 rounded-full"></span>
         {title}
       </h3>
       <ul className="space-y-3">

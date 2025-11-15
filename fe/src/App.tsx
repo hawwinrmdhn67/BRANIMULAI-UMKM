@@ -139,7 +139,16 @@ export default function App() {
   const pendingCount = umkmList.filter((u) => u.status === "pending").length;
 
   if (loading)
-    return <div className="text-center mt-10">Memuat data...</div>;
+    return (
+      <div className="text-center mt-10 flex flex-col items-center gap-4">
+      <img
+        src="/img/BraniMulai.webp"
+        alt="Loading"
+        className="loading-webp"
+      />
+      <p className="text-lg font-semibold">Memuat data UMKM...</p>
+      </div>
+    );
 
   return (
     <div className="min-h-screen">

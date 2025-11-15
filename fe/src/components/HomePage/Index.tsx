@@ -28,9 +28,9 @@ export function HomePage({ umkmList, onViewDetail }: HomePageProps) {
   return (
     <div className="min-h-screen bg-secondary/30">
       {/* Hero Section */}
-      <div className="bg-primary text-white py-16">
+      <div className="hero-umkm text-white py-16">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-white mb-4">Direktori UMKM Lokal</h1>
+          <h1 className="text-white mb-4">Direktori UMKM Lamongan</h1>
           <p className="text-green-50 mb-8 max-w-2xl mx-auto">
             Temukan dan dukung UMKM lokal di sekitar Anda. Jelajahi berbagai produk dan layanan dari pengusaha lokal.
           </p>

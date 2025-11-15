@@ -9,7 +9,7 @@ interface HotSpot {
   umkmCount: number;
   image: string;
   category: string;
-  types: string[]; // makanan, minuman, kerajinan, dll
+  types: string[];
 }
 
 export function HotSpot() {
@@ -87,16 +87,16 @@ export function HotSpot() {
   const filters = ['Semua', 'Makanan', 'Minuman', 'Kerajinan', 'Jasa'];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-green-100">
+    <div className="hotspot-wrapper">
       {/* Hero Section */}
-      <section className="bg-primary text-white py-16">
-        <div className="container mx-auto px-4">
-          <div className="text-center">
-            <h1 className="text-2xl font-medium mb-4">Hot Spot UMKM Lamongan</h1>
-            <p className="text-base text-white mb-2">
+      <section className="hotspot-hero">
+        <div className="hotspot-hero-container">
+          <div className="hotspot-hero-content">
+            <h1 className="hotspot-hero-title">Hot Spot UMKM Lamongan</h1>
+            <p className="hotspot-hero-subtitle">
               Temukan lokasi-lokasi berkumpulnya UMKM terbaik di Lamongan
             </p>
-            <p className="text-sm text-green-100">
+            <p className="hotspot-hero-text">
               Kunjungi langsung dan dukung produk lokal!
             </p>
           </div>
@@ -104,42 +104,42 @@ export function HotSpot() {
       </section>
 
       {/* Stats Section */}
-      <section className="container mx-auto px-4 -mt-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="bg-white rounded-lg p-4 shadow-md">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                <MapPin className="w-6 h-6 text-green-600" />
+      <section className="hotspot-stats">
+        <div className="hotspot-stats-grid">
+          <div className="hotspot-stat-card">
+            <div className="hotspot-stat-content">
+              <div className="hotspot-stat-icon">
+                <MapPin />
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Total Lokasi</p>
-                <p className="text-xl font-medium">{filteredHotSpots.length} Hot Spot</p>
+                <p className="hotspot-stat-label">Total Lokasi</p>
+                <p className="hotspot-stat-value">{filteredHotSpots.length} Hot Spot</p>
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-lg p-4 shadow-md">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                <Store className="w-6 h-6 text-green-600" />
+          <div className="hotspot-stat-card">
+            <div className="hotspot-stat-content">
+              <div className="hotspot-stat-icon">
+                <Store />
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Total UMKM</p>
-                <p className="text-xl font-medium">
+                <p className="hotspot-stat-label">Total UMKM</p>
+                <p className="hotspot-stat-value">
                   {filteredHotSpots.reduce((sum, spot) => sum + spot.umkmCount, 0)} UMKM
                 </p>
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-lg p-4 shadow-md">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                <Users className="w-6 h-6 text-green-600" />
+          <div className="hotspot-stat-card">
+            <div className="hotspot-stat-content">
+              <div className="hotspot-stat-icon">
+                <Users />
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Kategori</p>
-                <p className="text-xl font-medium">
+                <p className="hotspot-stat-label">Kategori</p>
+                <p className="hotspot-stat-value">
                   {new Set(hotSpots.map(spot => spot.category)).size} Kategori
                 </p>
               </div>
@@ -149,81 +149,70 @@ export function HotSpot() {
       </section>
 
       {/* Filter Section */}
-      <section className="container mx-auto px-4 py-8">
-        <div className="flex gap-2 flex-wrap">
+      <section className="hotspot-filter">
+        <div className="hotspot-filter-buttons">
           {filters.map((filter) => (
             <button
               key={filter}
               onClick={() => setSelectedFilter(filter)}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                selectedFilter === filter
-                  ? 'bg-primary text-white'
-                  : 'bg-white text-foreground hover:bg-green-50'
-              }`}
+              className={`hotspot-filter-btn ${selectedFilter === filter ? 'active' : ''}`}
             >
               {filter}
             </button>
           ))}
         </div>
-        <p className="text-sm text-muted-foreground mt-3">
+        <p className="hotspot-filter-info">
           Menampilkan {filteredHotSpots.length} lokasi
         </p>
       </section>
 
       {/* Hot Spots Grid */}
-      <section className="container mx-auto px-4 pb-8">
+      <section className="hotspot-grid-section">
         {filteredHotSpots.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="hotspot-grid">
             {filteredHotSpots.map((spot) => (
-              <div
-                key={spot.id}
-                className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow"
-              >
+              <div key={spot.id} className="hotspot-card">
                 {/* Image */}
-                <div className="relative h-48 overflow-hidden">
-                  <img
-                    src={spot.image}
-                    alt={spot.name}
-                    className="w-full h-full object-cover hover:scale-105 transition-transform"
-                  />
-                  <div className="absolute top-3 right-3 bg-white rounded-lg px-2 py-1">
-                    <p className="text-xs font-medium text-green-700">{spot.category}</p>
+                <div className="hotspot-card-image">
+                  <img src={spot.image} alt={spot.name} />
+                  <div className="hotspot-card-badge">
+                    <p className="hotspot-card-badge-text">{spot.category}</p>
                   </div>
                 </div>
 
                 {/* Content */}
-                <div className="p-4">
-                  <h3 className="font-medium text-base mb-2 line-clamp-1">{spot.name}</h3>
+                <div className="hotspot-card-content">
+                  <h3 className="hotspot-card-title">{spot.name}</h3>
                   
-                  <div className="flex items-start gap-2 mb-3">
-                    <MapPin className="w-4 h-4 text-muted-foreground shrink-0 mt-0.5" />
-                    <p className="text-sm text-muted-foreground line-clamp-2">{spot.location}</p>
+                  <div className="hotspot-card-location">
+                    <MapPin />
+                    <p className="hotspot-card-location-text">{spot.location}</p>
                   </div>
 
-                  <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
+                  <p className="hotspot-card-description">
                     {spot.description}
                   </p>
 
                   {/* Tags */}
-                  <div className="flex flex-wrap gap-1 mb-3">
+                  <div className="hotspot-card-tags">
                     {spot.types.map((type, index) => (
-                      <span key={index} className="text-xs bg-green-50 text-green-700 px-2 py-0.5 rounded">
+                      <span key={index} className="hotspot-card-tag">
                         {type}
                       </span>
                     ))}
                   </div>
 
                   {/* Stats */}
-                  <div className="flex items-center justify-between pt-3 border-t">
-                    <div className="flex items-center gap-2">
-                      <Store className="w-4 h-4 text-green-600" />
-                      <span className="text-sm font-medium text-green-700">
+                  <div className="hotspot-card-footer">
+                    <div className="hotspot-card-umkm">
+                      <Store />
+                      <span className="hotspot-card-umkm-text">
                         {spot.umkmCount} UMKM
                       </span>
                     </div>
-                    <button className="flex items-center gap-1 text-sm text-primary hover:text-green-700 transition-colors">
+                    <button className="hotspot-card-detail-btn">
                       Lihat Detail
-                      <ArrowRight className="w-4 h-4" />
+                      <ArrowRight />
                     </button>
                   </div>
                 </div>
@@ -231,9 +220,9 @@ export function HotSpot() {
             ))}
           </div>
         ) : (
-          <div className="text-center py-16">
-            <Store className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
-            <p className="text-base text-muted-foreground">
+          <div className="hotspot-empty">
+            <Store />
+            <p className="hotspot-empty-text">
               Tidak ada Hot Spot untuk kategori "{selectedFilter}"
             </p>
           </div>
@@ -241,13 +230,13 @@ export function HotSpot() {
       </section>
 
       {/* CTA Section */}
-      <section className="container mx-auto px-4 pb-8">
-        <div className="bg-primary rounded-lg p-8 text-center text-white">
-          <h2 className="text-xl font-medium mb-2">Punya Rekomendasi Hot Spot?</h2>
-          <p className="text-sm text-white mb-4">
+      <section className="hotspot-cta-section">
+        <div className="hotspot-cta">
+          <h2 className="hotspot-cta-title">Punya Rekomendasi Hot Spot?</h2>
+          <p className="hotspot-cta-text">
             Bantu kami menemukan lokasi UMKM lainnya di Lamongan
           </p>
-          <button className="bg-white text-primary px-6 py-2 rounded-md font-medium hover:bg-green-50 transition-colors">
+          <button className="hotspot-cta-btn">
             Usulkan Lokasi
           </button>
         </div>
