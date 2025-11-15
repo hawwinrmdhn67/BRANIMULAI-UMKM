@@ -19,10 +19,7 @@ export const Footer = () => {
                         </div>
                         <p className="text-white text-sm leading-relaxed mb-6 max-w-lg text-left">
                     Platform untuk menemukan dan mendukung UMKM lokal di kota Lamongan. 
-                    Kami membantu UMKM berkembang dan terhubung dengan pelanggan yang sesuai dengan motto kami 
-                    <span className="block text-black font-medium">
-                        "Dekatkan yang Lokal dan Mudahkan yang Digital"
-                    </span>
+                    Kami membantu UMKM berkembang dan terhubung dengan pelanggan yang sesuai dengan motto kami "Dekatkan yang Lokal dan Mudahkan yang Digital"
                     </p>
                         {/* Social Media Icons */}
                         {/* Telegram Bot CTA */}
@@ -80,7 +77,7 @@ export const Footer = () => {
                             </h4>
                             <ul className="space-y-3">
                                 <li><a href="#" className="text-white text-sm hover:text-green-200 transition-colors">Tentang Kami</a></li>
-                                <li><a href="#" className="text-white text-sm hover:text-green-200 transition-colors">Fitur</a></li>
+                                <li><a href="#" className="text-white text-sm hover:text-green-200 transition-colors">Seller Site</a></li>
                                 <li><a href="#" className="text-white text-sm hover:text-green-200 transition-colors">Tambahkan UMKM</a></li>
                                 <li><a href="#" className="text-white text-sm hover:text-green-200 transition-colors">Hot Spot</a></li>
                             </ul>
