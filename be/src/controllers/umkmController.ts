@@ -33,10 +33,9 @@ export const addUMKM = async (req: Request, res: Response) => {
       phone,
       whatsapp,
       status,
-      maps_link,
     } = req.body;
 
-    if (!name || !category || !description || !address || !coordinates) {
+    if (!name || !category || !description || !address) {
       return res.status(400).json({ message: "Data UMKM tidak lengkap" });
     }
 
@@ -50,24 +49,27 @@ export const addUMKM = async (req: Request, res: Response) => {
         .json({ message: "UMKM dengan nama dan alamat ini sudah terdaftar" });
     }
 
-    const mapsLink =
-      maps_link ||
-      `https://www.google.com/maps?q=${coordinates.lat},${coordinates.lng}`;
+    // Normalize/derive a single location link to store in DB.
+    // If the client provided numeric coordinates but not a link, build a Google Maps query link.
+    let locationLinkToStore: string | null = null;
+    if (locationLink) {
+      locationLinkToStore = locationLink;
+    } else if (coordinates && coordinates.lat != null && coordinates.lng != null) {
+      locationLinkToStore = `https://www.google.com/maps?q=${coordinates.lat},${coordinates.lng}`;
+    }
 
     const createdAt = new Date().toISOString().slice(0, 19).replace("T", " ");
 
     const [result] = await db.query<ResultSetHeader>(
       `INSERT INTO umkm
-       (name, category, description, address, latitude, longitude, maps_link, photos, phone, whatsapp, createdAt, status)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+       (name, category, description, address, location_link, photos, phone, whatsapp, createdAt, status)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         name,
         category,
         description,
         address,
-        coordinates.lat,
-        coordinates.lng,
-        mapsLink,
+        locationLinkToStore,
         JSON.stringify(photos || []),
         phone || null,
         whatsapp || null,
