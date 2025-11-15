@@ -20,7 +20,7 @@ export default function App() {
   const [umkmList, setUmkmList] = useState<UMKM[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
-  const API_URL = "http://localhost:5000/api/umkm";
+  const API_URL = "https://backendbranimuali-production.up.railway.app/api/umkm";
 
   useEffect(() => {
     const fetchUMKM = async () => {

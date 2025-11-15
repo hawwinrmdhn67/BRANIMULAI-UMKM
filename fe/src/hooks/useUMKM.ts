@@ -15,7 +15,7 @@ export function useUMKM() {
     const fetchUMKM = async () => {
       try {
         setLoading(true);
-        const res = await fetch("http://localhost:5000/api/umkm"); 
+        const res = await fetch("https://backendbranimuali-production.up.railway.app/api/umkm"); 
         const data = await res.json();
         setUmkmList(data);
       } catch (err) {
@@ -44,7 +44,7 @@ export function useUMKM() {
 
   const handleAddUMKM = async (umkmData: Omit<UMKM, "id" | "createdAt">) => {
     try {
-      const res = await fetch("http://localhost:5000/api/umkm", {
+      const res = await fetch("https://backendbranimuali-production.up.railway.app/api/umkm", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(umkmData),
@@ -58,7 +58,7 @@ export function useUMKM() {
 
   const handleDeleteUMKM = async (id: string) => {
     try {
-      await fetch(`http://localhost:5000/api/umkm/${id}`, { method: "DELETE" });
+      await fetch(`https://backendbranimuali-production.up.railway.app/api/umkm/${id}`, { method: "DELETE" });
       setUmkmList((prev) => prev.filter((umkm) => umkm.id !== id));
     } catch (err) {
       console.error("Gagal menghapus UMKM:", err);
@@ -67,7 +67,7 @@ export function useUMKM() {
 
   const handleApproveUMKM = async (id: string) => {
     try {
-      await fetch(`http://localhost:5000/api/umkm/${id}/approve`, { method: "PUT" });
+      await fetch(`https://backendbranimuali-production.up.railway.app/api/umkm/${id}/approve`, { method: "PUT" });
       setUmkmList((prev) =>
         prev.map((umkm) =>
           umkm.id === id ? { ...umkm, status: "approved" } : umkm
@@ -80,7 +80,7 @@ export function useUMKM() {
 
   const handleRejectUMKM = async (id: string) => {
     try {
-      await fetch(`http://localhost:5000/api/umkm/${id}/reject`, { method: "PUT" });
+      await fetch(`https://backendbranimuali-production.up.railway.app/api/umkm/${id}/reject`, { method: "PUT" });
       setUmkmList((prev) =>
         prev.map((umkm) =>
           umkm.id === id ? { ...umkm, status: "rejected" } : umkm
