@@ -80,7 +80,7 @@ export function SellerSite() {
                   onClick={() => setActiveTab(tab.id)}
                   className={`flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl font-medium text-sm sm:text-base transition-all ${
                     activeTab === tab.id
-                      ? 'bg-gradient-to-r from-green-500 to-emerald-600 text-white shadow-md'
+                      ? 'bg-gradient-to-r from-green-500 to-emerald-600 text-black shadow-md'
                       : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                   }`}
                 >

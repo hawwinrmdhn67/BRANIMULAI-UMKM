@@ -10,7 +10,7 @@ import { SellerSite } from "./components/SellerSite/Index";
 import { Footer } from "./components/Footer/Footer";
 import { UMKM } from "./lib/types";
 import { Toaster } from "./components/ui/sonner";
-import { Footer } from "./components/Footer/Footer";
+// import { Footer } from "./components/Footer/Footer";
 
 type Page = "home" | "detail" | "admin" | "hotspot" | "seller";
 
@@ -174,7 +174,6 @@ export default function App() {
 
       <Footer />
       <Toaster position="top-right" />
-      <Footer />
-    </div>
+      </div>
   );
 }
