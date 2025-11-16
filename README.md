@@ -31,6 +31,16 @@ Aplikasi direktori UMKM yang dibangun dengan Next.js 14 dan Tailwind CSS dengan 
 - **Form Tambah UMKM Baru**
   - UMKM baru otomatis berstatus "pending"
   - Form lengkap dengan validasi
+
+### 4. Halaman Hot Spot
+- Hot Spot berisi tempat tempat yang dalam 1 alamat memiliki berbagai UMKM/kategori UMKM yang berbeda beda/tempat berkumpulnya para usaha UMKM
+- Informasi lengkap HotSpot (nama, deskripsi, alamat)
+- Galeri foto produk
+- Tombol kembali ke beranda
+
+### 5. Halaman SellerSite
+- Berisi Tool Tool dan tips bagi para seller dalam mengelola bisnis mereka
+- Dengan adanya SellerSite kami mengharapkan tidak hanya merangkul para calon pembeli UMKM tapi juga para pelaku UMKM itu sendiri yang sesuai dengan motto kami "Dekatkan yang lokal dan mudahkan yang digital" 
   
 - **Sistem Persetujuan**
   - Tab Pending: UMKM yang menunggu persetujuan
