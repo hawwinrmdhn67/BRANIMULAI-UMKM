@@ -4,11 +4,11 @@ Aplikasi direktori UMKM yang dibangun dengan Next.js 14 dan Tailwind CSS dengan 
 
 ---
 
-## 📚 Dokumentasi
+<!-- ## 📚 Dokumentasi
 
 | Dokumen | Deskripsi |
 |---------|-----------|
-| [running.md](running.md)| dependenci FE & BE
+| [running.md](running.md)| dependenci FE & BE -->
 
 ---
 
@@ -47,14 +47,14 @@ Aplikasi direktori UMKM yang dibangun dengan Next.js 14 dan Tailwind CSS dengan 
   - Delete UMKM yang sudah approved atau rejected
   - Re-approve UMKM yang sebelumnya ditolak
 
-## Teknologi
+<!-- ## Teknologi
 
 - **Framework**: Next.js 14 (App Router)
 - **Styling**: Tailwind CSS
 - **UI Components**: shadcn/ui
 - **Icons**: Lucide React
 - **Notifications**: Sonner (Toast)
-- **Language**: TypeScript
+- **Language**: TypeScript -->
 
 ## Struktur Folder FE
 
@@ -88,15 +88,15 @@ yarn install
 pnpm install
 ```
 
-### 2. Jalankan Development Server
+<!-- ### 2. Jalankan Development Server
 
 ```bash
 npm run dev
 # atau
 yarn dev
 # atau
-pnpm dev
-```
+pnpm dev -->
+<!-- ``` -->
 
 Buka [http://localhost:3000](http://localhost:3000) di browser Anda.
 
@@ -106,7 +106,7 @@ Buka [http://localhost:3000](http://localhost:3000) di browser Anda.
 npm run build
 npm start
 ```
-
+<!-- 
 ## Konfigurasi
 
 ### Google Maps API (Opsional)
@@ -115,8 +115,8 @@ Untuk mengaktifkan peta interaktif di halaman detail UMKM:
 
 1. Dapatkan Google Maps API key dari [Google Cloud Console](https://console.cloud.google.com/)
 2. Buka file `/components/DetailPage.tsx`
-3. Ganti `YOUR_API_KEY_HERE` dengan API key Anda
-4. Uncomment bagian iframe di dalam komponen
+3. Ganti `YOUR_API_KEY_HERE` dengan API key Anda -->
+<!-- 4. Uncomment bagian iframe di dalam komponen
 
 ### Mengubah Tema Warna
 
@@ -126,7 +126,7 @@ Warna utama (hijau) dapat diubah di file `/styles/globals.css`:
 @theme {
   --color-primary: #16a34a;  /* Ubah nilai ini */
 }
-```
+``` -->
 
 ## Fitur Approval System
 
@@ -162,16 +162,16 @@ Saat ini aplikasi menggunakan mock data. Untuk integrasi dengan database:
 3. Implementasikan API routes di `/app/api/`
 4. Ganti state management dengan fetching data dari API
 
-## Catatan Penting
+<!-- ## Catatan Penting
 
 - Aplikasi ini menggunakan client-side rendering untuk semua halaman
 - Data disimpan di state (hilang saat refresh) - gunakan database untuk produksi
 - Peta menggunakan placeholder - perlu Google Maps API untuk produksi
-- Semua komponen utama sudah responsive
+- Semua komponen utama sudah responsive -->
 
-## Lisensi
+<!-- ## Lisensi
 
-MIT
+MIT -->
 
 ## Kontak
 
