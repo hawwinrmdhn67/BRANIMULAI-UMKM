@@ -15,7 +15,7 @@ export const Footer = () => {
                                     className="h-12 w-auto object-contain"
                                     />
                             </div>
-                           
+                        
                         </div>
                         <p className="text-white text-sm leading-relaxed mb-6 max-w-lg text-left">
                     Platform untuk menemukan dan mendukung UMKM lokal di kota Lamongan. 
