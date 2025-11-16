@@ -61,7 +61,7 @@ export const Footer = () => {
                             <ul className="space-y-3">
                                 <li><a href="#" className="text-white text-sm hover:text-green-200 transition-colors">Tentang Kami</a></li>
                                 <li><a href="#" className="text-white text-sm hover:text-green-200 transition-colors">Seller Site</a></li>
-                                <li><a href="#" className="text-white text-sm hover:text-green-200 transition-colors">Tambahkan UMKM</a></li>
+                                <li><a href="#" className="text-white text-sm hover:text-green-200 transition-colors">Catalog</a></li>
                                 <li><a href="#" className="text-white text-sm hover:text-green-200 transition-colors">Hot Spot</a></li>
                             </ul>
                         </div>

@@ -3013,3 +3013,64 @@ html {
   transform: scale(1.1);
 }
 
+/* ===== EMERALD & BLUE COLORS FOR PENCATATAN ===== */
+.sellersite-wrapper .bg-emerald-50 { background-color: #ecfdf5; }
+.sellersite-wrapper .bg-emerald-100 { background-color: #d1fae5; }
+.sellersite-wrapper .border-emerald-200 { border-color: #a7f3d0; }
+.sellersite-wrapper .text-emerald-600 { color: #059669; }
+.sellersite-wrapper .text-emerald-700 { color: #047857; }
+.sellersite-wrapper .text-emerald-900 { color: #064e3b; }
+.sellersite-wrapper .from-emerald-50 { --tw-gradient-from: #ecfdf5; }
+.sellersite-wrapper .to-emerald-100 { --tw-gradient-to: #d1fae5; }
+
+.sellersite-wrapper .bg-blue-50 { background-color: #eff6ff; }
+.sellersite-wrapper .bg-blue-100 { background-color: #dbeafe; }
+.sellersite-wrapper .border-blue-200 { border-color: #bfdbfe; }
+.sellersite-wrapper .text-blue-600 { color: #2563eb; }
+.sellersite-wrapper .text-blue-700 { color: #1d4ed8; }
+.sellersite-wrapper .text-blue-900 { color: #1e3a8a; }
+.sellersite-wrapper .from-blue-50 { --tw-gradient-from: #eff6ff; }
+.sellersite-wrapper .to-blue-100 { --tw-gradient-to: #dbeafe; }
+
+/* Additional missing classes for Pencatatan */
+.sellersite-wrapper .w-2 { width: calc(var(--spacing) * 2); }
+.sellersite-wrapper .h-8 { height: calc(var(--spacing) * 8); }
+.sellersite-wrapper .p-2 { padding: calc(var(--spacing) * 2); }
+.sellersite-wrapper .py-6 { padding-block: calc(var(--spacing) * 6); }
+.sellersite-wrapper .space-y-6 > :not(:last-child) { margin-bottom: calc(var(--spacing) * 6); }
+.sellersite-wrapper .space-y-5 > :not(:last-child) { margin-bottom: calc(var(--spacing) * 5); }
+.sellersite-wrapper .leading-relaxed { line-height: var(--leading-relaxed); }
+.sellersite-wrapper .truncate { 
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.sellersite-wrapper .min-w-0 { min-width: 0; }
+
+/* Gradient utilities */
+.sellersite-wrapper .bg-gradient-to-r {
+  background-image: linear-gradient(to right, var(--tw-gradient-from), var(--tw-gradient-to));
+}
+
+.sellersite-wrapper .from-green-600 { --tw-gradient-from: #16a34a; }
+.sellersite-wrapper .to-green-700 { --tw-gradient-to: #15803d; }
+
+/* Hover states */
+@media (hover: hover) {
+  .sellersite-wrapper .hover\:bg-red-50:hover { background-color: #fef2f2; }
+  .sellersite-wrapper .hover\:from-green-600:hover { --tw-gradient-from: #16a34a; }
+  .sellersite-wrapper .hover\:to-green-700:hover { --tw-gradient-to: #15803d; }
+  .sellersite-wrapper .hover\:bg-red-100:hover { background-color: #fee2e2; }
+}
+
+/* Red colors untuk delete button */
+.sellersite-wrapper .text-red-600 { color: #dc2626; }
+.sellersite-wrapper .bg-red-50 { background-color: #fef2f2; }
+.sellersite-wrapper .bg-red-100 { background-color: #fee2e2; }
+.sellersite-wrapper .border-red-200 { border-color: #fecaca; }
+
+/* Additional responsive utilities */
+@media (width >= 64rem) {
+  .sellersite-wrapper .lg\:col-span-1 { grid-column: span 1 / span 1; }
+  .sellersite-wrapper .lg\:col-span-2 { grid-column: span 2 / span 2; }
+}

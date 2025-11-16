@@ -1,6 +1,6 @@
 "use client";
 
-import { Home, UserCog, MapPin, Calculator } from "lucide-react";
+import { Home, UserCog, MapPin, Calculator, Album, Briefcase } from "lucide-react";
 import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
 
@@ -40,7 +40,7 @@ export function Navbar({ currentPage, onNavigate, pendingCount = 0 }: NavbarProp
                 onClick={() => onNavigate("seller")}
                 className={currentPage === "seller" ? "" : "text-white hover:bg-green-700"}
               >
-                <Calculator className="w-4 h-4 mr-2" />
+                <Briefcase className="w-4 h-4 mr-2" />
                 Seller Site
               </Button>
               

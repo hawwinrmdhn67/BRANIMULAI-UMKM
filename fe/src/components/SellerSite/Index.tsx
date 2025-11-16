@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { Plus, Trash2, Calculator, DollarSign, TrendingUp, BookOpen, Package, Users } from 'lucide-react';
+import { Plus, Trash2, Calculator, BookOpen, Package, Users, TrendingUp, Album, Briefcase } from 'lucide-react';
+import { Pencatatan } from './Pencatatan';
+import Kalkulator from './Kalkulator';
 
 interface Material {
   id: string;
@@ -16,6 +18,7 @@ export function SellerSite() {
   const [laborCost, setLaborCost] = useState(0);
   const [overheadCost, setOverheadCost] = useState(0);
   const [productUnit, setProductUnit] = useState(100);
+  const [selectedMargin, setSelectedMargin] = useState(30); // Default margin 30%
 
   const [newMaterial, setNewMaterial] = useState({
     name: '',
@@ -39,16 +42,28 @@ export function SellerSite() {
     setMaterials(materials.filter(m => m.id !== id));
   };
 
-  
   const totalMaterialCost = materials.reduce((sum, m) => sum + m.price, 0);
   const totalCost = totalMaterialCost + laborCost + overheadCost;
   const hppPerUnit = productUnit > 0 ? totalCost / productUnit : 0;
+  
+  // Perhitungan harga jual berdasarkan margin
+  const sellingPrice = hppPerUnit > 0 ? hppPerUnit * (1 + selectedMargin / 100) : 0;
+  const profitPerUnit = sellingPrice - hppPerUnit;
+
+  const marginOptions = [
+    { value: 20, label: '20%', color: 'blue' },
+    { value: 25, label: '25%', color: 'indigo' },
+    { value: 30, label: '30%', color: 'green' },
+    { value: 35, label: '35%', color: 'emerald' },
+    { value: 40, label: '40%', color: 'teal' },
+    { value: 50, label: '50%', color: 'cyan' }
+  ];
 
   const tabs = [
-    { id: 'calculator', label: 'Kalkulator HPP', icon: Calculator },
+    { id: 'calculator', label: 'Kalkulator HPP', icon: Calculator },    
+    { id: 'simulation', label: 'Kalkulator Titik Impas', icon: Package },
+    { id: 'pencatatan', label: 'Pencatatan Harian', icon: TrendingUp },
     { id: 'tips', label: 'Tips Bisnis', icon: BookOpen },
-    { id: 'simulation', label: 'Simulasi Laba Rugi', icon: Package },
-    { id: 'pencatatan', label: 'Pencatatan Harian', icon: Package },
     { id: 'marketing', label: 'Strategi Pemasaran', icon: Users }
   ];
 
@@ -56,17 +71,17 @@ export function SellerSite() {
     <div className="sellersite-wrapper min-h-screen bg-gray-50 py-6 sm:py-8 lg:py-12">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
         {/* Header */}
-        <div className="bg-white rounded-xl p-4 sm:p-6 mb-6 shadow-sm border border-gray-200">
+        <div className="bg-black rounded-xl p-4 sm:p-6 mb-6 shadow-sm border border-gray-200">
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-6">
             <div className="w-12 h-12 sm:w-14 sm:h-14 bg-green-600 rounded-xl flex items-center justify-center shadow-md">
-              <Calculator className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
+              <Briefcase className="w-6 h-6 sm:w-7 sm:h-7 text-black" />
             </div>
             <div className="flex-1">
               <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-1">
-                Seller Site BraniMulai
+                Seller Site <span className="text-green-600">BraniMulai</span>
               </h1>
               <p className="text-sm sm:text-base text-gray-600">
-                  Hadir sebagai Alat Bantu Seller untuk memudahkan para seller dalam mengelola UMKM mereka
+                Hadir sebagai Alat Bantu Seller untuk memudahkan para seller dalam mengelola UMKM mereka
               </p>
             </div>
           </div>
@@ -81,13 +96,12 @@ export function SellerSite() {
                   onClick={() => setActiveTab(tab.id)}
                   className={`flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-lg font-medium text-sm transition-all ${
                     activeTab === tab.id
-                      ? 'bg-green-600 text-white shadow-sm'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      ? 'bg-green-600 text-gray shadow-sm border border-gray-600'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200  '
                   }`}
                 >
                   <Icon className="w-4 h-4" />
                   <span className="hidden sm:inline">{tab.label}</span>
-                  <span className="sm:hidden">{tab.label.split(' ')[0]}</span>
                 </button>
               );
             })}
@@ -132,8 +146,8 @@ export function SellerSite() {
                         <p className="text-xs text-gray-600 leading-relaxed">
                           Masukkan total biaya tenaga kerja untuk proses produksi.
                         </p>
-                        <p className="text-xs text-green-600 mt-1 font-medium">
-                          Contoh: Upah karyawan Rp 50.000/hari
+                        <p className="text-xs text-green-600 mt-1 bg-green-50 font-medium">
+                          📌 Contoh: Upah karyawan Rp 50.000/hari
                         </p>
                       </div>
                     </div>
@@ -147,8 +161,8 @@ export function SellerSite() {
                         <p className="text-xs text-gray-600 leading-relaxed">
                           Masukkan total biaya overhead (listrik, gas, sewa tempat, dll).
                         </p>
-                        <p className="text-xs text-green-600 mt-1 font-medium">
-                          Contoh: Listrik + gas + sewa = Rp 40.000/hari
+                        <p className="text-xs text-green-600 mt-1 bg-green-50 font-medium">
+                          📌 Contoh: Listrik + gas + sewa = Rp 40.000/hari
                         </p>
                       </div>
                     </div>
@@ -162,16 +176,16 @@ export function SellerSite() {
                         <p className="text-xs text-gray-600 leading-relaxed">
                           Masukkan <span className="font-semibold text-gray-900">total produk yang dihasilkan</span> dari bahan yang dibeli.
                         </p>
-                        <p className="text-xs text-green-600 mt-1 font-medium">
-                          Contoh: Dari bahan di atas bisa 100 gelas es teh
+                        <p className="text-xs text-green-600 mt-1 bg-green-50 font-medium">
+                          📌 Contoh: Dari bahan di atas bisa 100 gelas es teh
                         </p>
                       </div>
                     </div>
                   </div>
 
-                  <div className="bg-gradient-to-r from-green-500 to-green-600 rounded-lg p-3 text-white shadow-md">
-                    <p className="font-bold text-xs mb-2">📊 Cara Kerja Kalkulator:</p>
-                    <div className="space-y-1.5 text-xs">
+                  <div className="bg-white rounded-lg p-3 shadow-sm border-2 border-amber-200">
+                    <p className="font-bold text-xs mb-2 text-gray-900">📊 Cara Kerja Kalkulator:</p>
+                    <div className="space-y-1.5 text-xs text-gray-900">
                       <p className="leading-relaxed">1. Gula 5kg = Rp 75.000</p>
                       <p className="leading-relaxed">2. Teh 25pcs = Rp 12.500</p>
                       <p className="leading-relaxed">3. Total Bahan = Rp 87.500</p>
@@ -299,7 +313,7 @@ export function SellerSite() {
 
                 <button
                   onClick={addMaterial}
-                  className="w-full bg-green-600 text-white py-2.5 rounded-lg flex items-center justify-center gap-2 hover:bg-green-700 transition-all font-medium text-sm shadow-sm"
+                  className="w-full bg-gray-600 text-black py-2.5 rounded-lg flex items-center justify-center gap-2 hover:bg-green-700 transition-all font-medium text-sm shadow-sm"
                 >
                   <Plus className="w-4 h-4" />
                   Tambah Bahan
@@ -405,25 +419,85 @@ export function SellerSite() {
                 </div>
               </div>
 
-              {/* Hasil & Hitung HPP */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-6 border-2 border-green-300">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Calculator className="w-5 h-5 text-green-700" />
-                    <span className="text-sm font-bold text-green-900">Total HPP per Unit</span>
+              {/* Hasil HPP & Margin Selector */}
+              <div className="bg-white rounded-xl p-4 sm:p-6 shadow-sm border border-gray-200">
+                <div className="grid grid-cols-1 gap-4">
+                  {/* HPP Display */}
+                  <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-6 border-2 border-green-300">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Calculator className="w-5 h-5 text-green-700" />
+                      <span className="text-sm font-bold text-green-900">Total HPP per Unit</span>
+                    </div>
+                    <p className="text-3xl font-bold text-green-700">
+                      Rp {Math.round(hppPerUnit).toLocaleString('id-ID')}
+                    </p>
+                    <p className="text-xs text-green-600 mt-2">
+                      Total Biaya: Rp {totalCost.toLocaleString('id-ID')} ÷ {productUnit} unit
+                    </p>
                   </div>
-                  <p className="text-3xl font-bold text-green-700">
-                    Rp {Math.round(hppPerUnit).toLocaleString('id-ID')}
-                  </p>
-                  <p className="text-xs text-green-600 mt-2">
-                    Total Biaya: Rp {totalCost.toLocaleString('id-ID')} ÷ {productUnit} unit
-                  </p>
-                </div>
 
-                <div className="bg-gradient-to-r from-green-600 to-green-700 text-white rounded-xl p-6 shadow-lg flex flex-col items-center justify-center gap-2">
-                  <Calculator className="w-6 h-6" />
-                  <span className="font-bold text-lg">Hasil Perhitungan</span>
-                  <p className="text-xs text-center text-green-100">HPP sudah otomatis terhitung</p>
+                  {/* Margin Selector */}
+                  <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 border-2 border-blue-300">
+                    <div className="flex items-center gap-2 mb-4">
+                      <span className="text-xl">💰</span>
+                      <h3 className="text-base font-bold text-gray-900">Pilih Margin Keuntungan</h3>
+                    </div>
+                    
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-4">
+                      {marginOptions.map((option) => (
+                        <button
+                          key={option.value}
+                          onClick={() => setSelectedMargin(option.value)}
+                          className={`px-4 py-2.5 rounded-lg font-semibold text-sm transition-all ${
+                            selectedMargin === option.value
+                              ? 'bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-6 border-2  text-gray scale-105'
+                              : 'bg-green-600 text-gray-700 hover:bg-green-50 border border-gray-300'
+                          }`}
+                        >
+                          {option.label}
+                        </button>
+                      ))}
+                    </div>
+
+                    {/* Hasil Perhitungan Harga Jual */}
+                    {hppPerUnit > 0 && (
+                      <div className="bg-white rounded-lg p-4 border-2 border-green-400">
+                        <div className="space-y-3">
+                          <div className="flex justify-between items-center">
+                            <span className="text-sm text-gray-600">HPP per Unit:</span>
+                            <span className="text-base font-semibold text-gray-900">
+                              Rp {Math.round(hppPerUnit).toLocaleString('id-ID')}
+                            </span>
+                          </div>
+                          <div className="flex justify-between items-center">
+                            <span className="text-sm text-gray-600">Margin Keuntungan:</span>
+                            <span className="text-base font-semibold text-green-600">
+                              {selectedMargin}%
+                            </span>
+                          </div>
+                          <div className="h-px bg-gray-300"></div>
+                          <div className="flex justify-between items-center">
+                            <span className="text-base font-bold text-gray-900">Harga Jual Rekomendasi:</span>
+                            <span className="text-2xl font-bold text-green-600">
+                              Rp {Math.round(sellingPrice).toLocaleString('id-ID')}
+                            </span>
+                          </div>
+                          <div className="flex justify-between items-center bg-green-50 p-2 rounded">
+                            <span className="text-sm text-green-700">Keuntungan per Unit:</span>
+                            <span className="text-base font-bold text-green-700">
+                              Rp {Math.round(profitPerUnit).toLocaleString('id-ID')}
+                            </span>
+                          </div>
+                          <div className="flex justify-between items-center bg-blue-50 p-2 rounded">
+                            <span className="text-sm text-blue-700">Total Keuntungan ({productUnit} unit):</span>
+                            <span className="text-base font-bold text-blue-700">
+                              Rp {Math.round(profitPerUnit * productUnit).toLocaleString('id-ID')}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
 
@@ -439,6 +513,7 @@ export function SellerSite() {
                     setLaborCost(0);
                     setOverheadCost(0);
                     setProductUnit(100);
+                    setSelectedMargin(30);
                   }}
                   className="flex-1 bg-white border-2 border-gray-300 text-gray-700 py-3 rounded-lg hover:bg-gray-50 transition-all font-medium text-sm"
                 >
@@ -448,6 +523,9 @@ export function SellerSite() {
             </div>
           </div>
         )}
+
+        {/* Tab Pencatatan Harian */}
+        {activeTab === 'pencatatan' && <Pencatatan />}
 
         {activeTab === 'tips' && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
@@ -485,41 +563,7 @@ export function SellerSite() {
         )}
 
         {activeTab === 'simulation' && (
-          <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-lg border border-gray-200">
-            <div className="text-center py-12">
-              <Package className="w-16 h-16 sm:w-20 sm:h-20 text-green-500 mx-auto mb-4" />
-              <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
-                Simulasi Laba Rugi
-              </h3>
-              <p className="text-sm sm:text-base text-gray-600 mb-6">
-                Fitur ini akan segera hadir untuk membantu Anda men-Simulasikan Laba rugi
-              </p>
-              <div className="inline-block bg-green-50 border border-green-200 rounded-xl px-6 py-3">
-                <p className="text-sm font-medium text-green-700">
-                  🎉 Coming Soon
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
-
-         {activeTab === 'pencatatan' && (
-          <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-lg border border-gray-200">
-            <div className="text-center py-12">
-              <Package className="w-16 h-16 sm:w-20 sm:h-20 text-green-500 mx-auto mb-4" />
-              <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
-                Pencatatan Transaksi harian
-              </h3>
-              <p className="text-sm sm:text-base text-gray-600 mb-6">
-                Fitur ini akan segera hadir untuk membantu Anda mengelola Transaksi produk harian anda secara manual/otomatis
-              </p>
-              <div className="inline-block bg-green-50 border border-green-200 rounded-xl px-6 py-3">
-                <p className="text-sm font-medium text-green-700">
-                  🎉 Coming Soon
-                </p>
-              </div>
-            </div>
-          </div>
+            <Kalkulator />
         )}
 
         {activeTab === 'marketing' && (

@@ -19,63 +19,83 @@ export function HotSpot() {
   const hotSpots: HotSpot[] = [
     {
       id: '1',
-      name: 'Pasar Tradisional Lamongan',
+      name: 'Pusat Kuliner Lamongan',
       location: 'Jl. Panglima Sudirman, Lamongan',
-      description: 'Pusat perdagangan tradisional dengan berbagai UMKM makanan, kerajinan, dan produk lokal.',
-      umkmCount: 45,
-      image: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=800&q=80',
-      category: 'Pasar Tradisional',
-      types: ['Makanan', 'Minuman', 'Kerajinan', 'Jasa']
+      description: 'Pusat perdagangan kuliner dengan berbagai UMKM makanan khas lamongan dan nasional.',
+      umkmCount: 12,
+      image: '/img/pusat.jpeg',
+      category: 'Pusat Makanan',
+      types: ['Makanan', 'Minuman']
     },
     {
       id: '2',
-      name: 'Sentra Kerajinan Bambu',
-      location: 'Desa Sukomalo, Lamongan',
-      description: 'Kawasan sentra industri kerajinan bambu dengan berbagai produk unik dan berkualitas.',
+      name: 'Pusat Jajanan & Permainan Anak-Anak',
+      location: 'Pusat Kota Lamongan',
+      description: 'Kawasan sentra jajanan dan berbagai permainan anak anak dan keluarga.',
       umkmCount: 32,
-      image: 'https://images.unsplash.com/photo-1452860606245-08befc0ff44b?w=800&q=80',
-      category: 'Sentra Kerajinan',
+      image: '/img/jajanan.jpeg',
+      category: 'Pusat Makanan dan Permainan',
       types: ['Kerajinan']
     },
     {
       id: '3',
-      name: 'Kawasan Kuliner Tanjung',
-      location: 'Pantai Tanjung Kodok, Lamongan',
-      description: 'Destinasi wisata kuliner dengan puluhan UMKM makanan laut dan oleh-oleh khas Lamongan.',
-      umkmCount: 38,
-      image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&q=80',
+      name: 'Sentra Kuliner Andasari',
+      location: 'Jl Andasari, Lamongan',
+      description: 'Destinasi wisata kuliner dengan puluhan UMKM makanan khas lamongan hingga makanan laut dan oleh-oleh khas Lamongan.',
+      umkmCount: 23,
+      image: '/img/sentra.jpeg',
       category: 'Kuliner',
       types: ['Makanan', 'Minuman']
     },
     {
       id: '4',
-      name: 'Alun-Alun Lamongan',
-      location: 'Pusat Kota Lamongan',
-      description: 'Pusat keramaian dengan berbagai stand UMKM fashion, aksesoris, dan jajanan.',
-      umkmCount: 28,
+      name: 'Pasar Buah Lamongan',
+      location: 'Jl Kusuma Bangsa,Lamongan',
+      description: 'Pusat perdagangan berbagai macam buah lamongan dengan kualitas tinggi harga merakyat.',
+      umkmCount: 43,
       image: 'https://images.unsplash.com/photo-1533900298318-6b8da08a523e?w=800&q=80',
-      category: 'Ruang Publik',
-      types: ['Makanan', 'Minuman', 'Kerajinan']
+      category: 'Pusat Buah-Buahan',
+      types: ['Buah-Buahan','Sayuran']
     },
     {
       id: '5',
-      name: 'Desa Wisata Sendangagung',
-      location: 'Kec. Paciran, Lamongan',
-      description: 'Desa wisata dengan berbagai UMKM produk pertanian organik dan olahan hasil bumi.',
-      umkmCount: 25,
-      image: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&q=80',
-      category: 'Desa Wisata',
+      name: 'Pusat Nasi Boran Belakang Gedung Pemda Lamongan',
+      location: 'Jl KH. Ahmad Dahlan, Lamongan',
+      description: 'Perkumpulan para pedagang nasi boran yang aktif sejak 2010 dari pagi sampai jam 6 malam.',
+      umkmCount: 5,
+      image: '/img/boran.jpeg',
+      category: 'Kuliner',
       types: ['Makanan', 'Minuman']
     },
     {
       id: '6',
+      name: 'Desa Wisata Sendangagung',
+      location: 'Kec. Paciran, Lamongan',
+      description: 'Desa wisata dengan berbagai UMKM produk pertanian organik dan olahan hasil bumi.',
+      umkmCount: 25,
+      image: 'https://jadesta.kemenparekraf.go.id/imgpost/94059_medium.jpg',
+      category: 'Desa Wisata',
+      types: ['Makanan', 'Minuman']
+    },
+    {
+      id: '7',
       name: 'Sentra Batik Lamongan',
       location: 'Jl. Veteran, Lamongan',
       description: 'Kawasan pengrajin batik dengan motif khas Lamongan dan produk fashion lokal.',
-      umkmCount: 20,
-      image: 'https://images.unsplash.com/photo-1610701596007-11502861dcfa?w=800&q=80',
+      umkmCount: 8,
+      image: 'https://asset.kompas.com/crops/HbK2EboXX66I8ZrgEbWKQFt_HNQ=/0x0:0x0/375x240/data/photo/2024/10/02/66fd4fabeb34b.jpg',
       category: 'Sentra Kerajinan',
       types: ['Kerajinan']
+    },
+    {
+      id: '8',
+      name: 'Moola(Mall Oleh Oleh Kabupaten Lamongan)',
+      location: 'Jl. Panglima Sudirman No 94, Lamongan',
+      description: 'Pusat Oleh Oleh Kabupaten Lamongan, dari jajanan,kerajinan sampai batik dengan motif khas Lamongan dan produk fashion lokal.',
+      umkmCount: 1,
+      image: 'https://api.minio.jatimprov.go.id/kominfo-jatim/images/IMG-20240725-WA0060.jpg',
+      category: 'Mall',
+      types: ['Kerajinan','Makanan','Minuman']
     }
   ];
 
@@ -232,7 +252,7 @@ export function HotSpot() {
       {/* CTA Section */}
       <section className="hotspot-cta-section">
         <div className="hotspot-cta">
-          <h2 className="hotspot-cta-title">Punya Rekomendasi Hot Spot?</h2>
+          <h2 className="hotspot-cta-title">Punya Rekomendasi Hot Spot/UMKM?</h2>
           <p className="hotspot-cta-text">
             Bantu kami menemukan lokasi UMKM lainnya di Lamongan
           </p>
