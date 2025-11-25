@@ -5,10 +5,13 @@ export interface UMKM {
   category: string;
   description: string;
   address: string;
-  coordinates: {
+  // coordinates may be present as numeric lat/lng (old model)
+  coordinates?: {
     lat: number;
     lng: number;
   };
+  // or a single location link can be provided (new model)
+  locationLink?: string;
   photos: string[];
   phone?: string;
   whatsapp?: string;

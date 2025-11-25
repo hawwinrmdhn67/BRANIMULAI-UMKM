@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { AdminPage } from "../components/AdminPage/Index";
 import { UMKM } from "../lib/types";
 
-const API_BASE_URL = "http://localhost:5000"; 
+const API_BASE_URL = "https://backendbranimuali-production.up.railway.app/api/umkm"; 
 
 export default function AdminContainer() {
   const [umkmList, setUmkmList] = useState<UMKM[]>([]);

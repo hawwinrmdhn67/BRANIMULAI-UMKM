@@ -15,13 +15,30 @@ export const Footer = () => {
                                     className="h-12 w-auto object-contain"
                                     />
                             </div>
-                           
+                        
                         </div>
                         <p className="text-white text-sm leading-relaxed mb-6 max-w-lg text-left">
                     Platform untuk menemukan dan mendukung UMKM lokal di kota Lamongan. 
                     Kami membantu UMKM berkembang dan terhubung dengan pelanggan yang sesuai dengan motto kami "Dekatkan yang Lokal dan Mudahkan yang Digital"
                     </p>
                         {/* Social Media Icons */}
+                        {/* Telegram Bot CTA */}
+                        <div className="mb-6">
+                            <a 
+                                href="https://t.me/branimulai_bot" 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-3 bg-green-700 hover:bg-green-800 text-white px-6 py-3 rounded-lg transition-colors"
+                            >
+                                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M22.5 2.2c-.3-.2-.7-.2-1 .1L2.3 12.1c-.6.3-.6 1.2.1 1.5l4 1.6 1.8 5.7c.2.6 1 .8 1.4.4l3.1-2.9 4.7 3.5c.5.3 1.3.1 1.6-.5.2-.3.3-.6.2-.9L23 3.2c0-.4-.1-.7-.4-1zM9.7 15.6l-.9-3.1 8-6.1-7.1 9.2z" />
+                                </svg>
+                                <a href="http://t.me/branimulai_bot" target="_blank" rel="noopener noreferrer">
+                                    <span className="font-medium">Daftarkan UMKM Anda Melalui Bot Telegram Kami</span>
+                                </a>
+                            </a>
+                        </div>
+
                         <div className="flex items-center gap-3">
                             <a href="#" className="w-9 h-9 bg-green-700 text-white rounded-lg flex items-center justify-center hover:bg-green-800 transition-colors">
                                 <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">

@@ -54,7 +54,7 @@ export function DetailPage({ umkm: rawUMKM, onBack }: DetailPageProps) {
             </div>
 
             <div className="bg-white p-5 rounded-2xl shadow-sm">
-              <UMKMMap coordinates={umkm.coordinates} />
+              <UMKMMap coordinates={umkm.coordinates} locationLink={umkm.locationLink} />
             </div>
           </div>
 

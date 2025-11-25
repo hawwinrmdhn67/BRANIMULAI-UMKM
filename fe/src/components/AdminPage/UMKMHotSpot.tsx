@@ -13,7 +13,7 @@ import { toast } from "sonner";
 export interface HotSpot {
   name: string;
   location: string;
-  photoUrl: string,
+  photoUrl: string;
   description: string;
   category: string;
 }
@@ -35,7 +35,7 @@ export function UMKMHotSpot() {
     }
     console.log("Hot Spot submitted:", hotSpot);
     toast.success(`Hot Spot "${hotSpot.name}" berhasil ditambahkan!`);
-    setHotSpot({ name:"", location:"",photoUrl:"", description:"", category:"Kuliner" });
+    setHotSpot({ name:"", location:"", photoUrl:"", description:"", category:"Kuliner" });
   };
 
   return (
@@ -45,16 +45,31 @@ export function UMKMHotSpot() {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <Label htmlFor="hotspotName">Nama Hot Spot *</Label>
-            <Input id="hotspotName" value={hotSpot.name} onChange={(e: React.ChangeEvent<HTMLInputElement>)=>setHotSpot({...hotSpot, name:e.target.value})} placeholder="Contoh: Pasar Tradisional Lamongan" />
+            <Input 
+              id="hotspotName"
+              value={hotSpot.name}
+              onChange={(e)=>setHotSpot({...hotSpot, name:e.target.value})}
+              placeholder="Contoh: Pasar Tradisional Lamongan"
+            />
           </div>
+
           <div>
             <Label htmlFor="hotspotLocation">Lokasi *</Label>
-            <Input id="hotspotLocation" value={hotSpot.location} onChange={e=>setHotSpot({...hotSpot, location:e.target.value})} placeholder="Contoh: Jl. Panglima Sudirman, Lamongan" />
+            <Input 
+              id="hotspotLocation"
+              value={hotSpot.location}
+              onChange={(e)=>setHotSpot({...hotSpot, location:e.target.value})}
+              placeholder="Contoh: Jl. Panglima Sudirman, Lamongan"
+            />
           </div>
+
           <div>
             <Label htmlFor="hotspotCategory">Kategori *</Label>
-            <Select value={hotSpot.category} onValueChange={(val: any)=>setHotSpot({...hotSpot, category:val})}>
-              <SelectTrigger id="hotspotCategory"><SelectValue/></SelectTrigger>
+            <Select
+              value={hotSpot.category}
+              onValueChange={(val)=>setHotSpot({...hotSpot, category: val})}
+            >
+              <SelectTrigger id="hotspotCategory"><SelectValue /></SelectTrigger>
               <SelectContent>
                 <SelectItem value="Kuliner">Kuliner</SelectItem>
                 <SelectItem value="Ruang Publik">Ruang Publik</SelectItem>
@@ -63,14 +78,27 @@ export function UMKMHotSpot() {
               </SelectContent>
             </Select>
           </div>
+
           <div>
             <Label htmlFor="hotspotphotoUrl">Link Photo Url *</Label>
-            <Input id="hotspotphotoUrl" value={hotSpot.photoUrl} onChange={e=>setHotSpot({...hotSpot, photoUrl:e.target.value})} placeholder="Contoh: https://....." />
-          </div>          
+            <Input 
+              id="hotspotphotoUrl"
+              value={hotSpot.photoUrl}
+              onChange={(e)=>setHotSpot({...hotSpot, photoUrl:e.target.value})}
+              placeholder="Contoh: https://....."
+            />
+          </div>
+
           <div>
             <Label htmlFor="hotspotDescription">Deskripsi *</Label>
-            <Textarea id="hotspotDescription" value={hotSpot.description} onChange={e=>setHotSpot({...hotSpot, description:e.target.value})} placeholder="Contoh: Pusat perdagangan tradisional dengan berbagai UMKM makanan dan kerajinan" />
+            <Textarea
+              id="hotspotDescription"
+              value={hotSpot.description}
+              onChange={(e)=>setHotSpot({...hotSpot, description:e.target.value})}
+              placeholder="Contoh: Pusat perdagangan tradisional dengan berbagai UMKM"
+            />
           </div>
+
           <Button type="submit" className="w-full bg-primary hover:bg-green-700">
             <Plus className="w-4 h-4 mr-2" /> Tambah Hot Spot
           </Button>

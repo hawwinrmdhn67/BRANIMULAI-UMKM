@@ -67,7 +67,7 @@ export function UMKMForm({ onAddUMKM }: UMKMFormProps) {
     };
 
     try {
-      const res = await fetch("http://localhost:5000/api/umkm", {
+      const res = await fetch("https://backendbranimuali-production.up.railway.app/api/umkm", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newUMKM),

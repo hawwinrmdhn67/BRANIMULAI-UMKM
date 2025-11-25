@@ -89,7 +89,7 @@ export function AdminPage({ umkmList, onAddUMKM, onDeleteUMKM, onApproveUMKM, on
           <UMKMStats umkmList={umkmList} />
         </div>
 
-        {/* HotSpot Form di bawah */}
+        {/* HotSpot Form */}
         <div className="mb-8">
           <UMKMHotSpot />
         </div>

@@ -10,6 +10,7 @@ import { SellerSite } from "./components/SellerSite/Index";
 import { Footer } from "./components/Footer/Footer";
 import { UMKM } from "./lib/types";
 import { Toaster } from "./components/ui/sonner";
+// import { Footer } from "./components/Footer/Footer";
 
 type Page = "home" | "detail" | "admin" | "hotspot" | "seller";
 
@@ -19,7 +20,7 @@ export default function App() {
   const [umkmList, setUmkmList] = useState<UMKM[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
-  const API_URL = "http://localhost:5000/api/umkm";
+  const API_URL = "https://backendbranimuali-production.up.railway.app/api/umkm";
 
   useEffect(() => {
     const fetchUMKM = async () => {
@@ -182,6 +183,6 @@ export default function App() {
 
       <Footer />
       <Toaster position="top-right" />
-    </div>
+      </div>
   );
 }
